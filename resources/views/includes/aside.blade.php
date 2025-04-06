@@ -2,7 +2,7 @@
     <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-            <a href="index.html" class="logo">
+            <a href="/" class="logo">
                 <img src="/assets/master/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
             </a>
             <div class="nav-toggle">
@@ -23,26 +23,16 @@
         <div class="sidebar-content">
             <ul class="nav nav-secondary">
                 <li class="nav-item active">
-                    <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                    <a href="{{ route('dashboard') }}" class="collapsed" aria-expanded="false">
                         <i class="fas fa-home"></i>
                         <p>Dashboard</p>
-                        <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="dashboard">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="../demo1/index.html">
-                                    <span class="sub-item">Dashboard 1</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </li>
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                     </span>
-                    <h4 class="text-section">Components</h4>
+                    <h4 class="text-section">Manage</h4>
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#base">
@@ -103,19 +93,29 @@
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#sidebarLayouts">
                         <i class="fas fa-th-list"></i>
-                        <p>Sidebar Layouts</p>
+                        <p>Phân quyền</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse" id="sidebarLayouts">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="sidebar-style-2.html">
-                                    <span class="sub-item">Sidebar Style 2</span>
+                                <a href="{{ route('roles.index') }}">
+                                    <span class="sub-item">Vai trò</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="icon-menu.html">
-                                    <span class="sub-item">Icon Menu</span>
+                                    <span class="sub-item">Chức vụ</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('actions.index') }}">
+                                    <span class="sub-item">Hành động</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('permissions.index') }}">
+                                    <span class="sub-item">Quyền hành động</span>
                                 </a>
                             </li>
                         </ul>

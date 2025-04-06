@@ -34,6 +34,7 @@
 
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="/assets/master/css/demo.css" />
+    <link rel="stylesheet" href="/assets/master/css/admin.css" />
 </head>
 
 <body>
@@ -309,7 +310,13 @@
             lineColor: "#ffa534",
             fillColor: "rgba(255, 165, 52, .14)",
         });
+
+        $(document).ready(function () {
+          $("#basic-datatables").DataTable({});
+        });
     </script>
+        <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>
+        <script src="/assets/master/js/sweetalert.js"></script>
 </body>
 
 </html>
