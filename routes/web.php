@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PositionController;
+use App\Http\Controllers\Web\ProjectController;
 use App\Http\Controllers\Web\RoleController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,15 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('/{id}', 'show')->name('users.show');
         Route::put('/{id}', 'update')->name('users.update');
         Route::delete('/{id}', 'delete')->name('users.delete');
+    });
+
+    Route::controller(ProjectController::class)->prefix('projects')->group(function () {
+        Route::get('/', 'index')->name('projects.index');
+        Route::get('/create', 'create')->name('projects.create');
+        Route::post('/create', 'store')->name('projects.store');
+        Route::get('/{id}', 'show')->name('projects.show');
+        Route::put('/{id}', 'update')->name('projects.update');
+        Route::delete('/{id}', 'delete')->name('projects.delete');
     });
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {

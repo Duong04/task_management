@@ -101,6 +101,7 @@ return new class extends Migration
             $table->id();
             $table->string('name'); 
             $table->text('description')->nullable(); 
+            $table->enum('status', ['not_started', 'in_progress', 'completed'])->nullable()->default('not_started');; 
             $table->date('start_date')->nullable(); 
             $table->date('end_date')->nullable(); 
             $table->unsignedBigInteger('created_by');

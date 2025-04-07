@@ -91,7 +91,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="#tables">
+                    <a href="{{ route('projects.index') }}">
                         <i class="fas fa-table"></i>
                         <p>Quản lý dự án</p>
                     </a>
