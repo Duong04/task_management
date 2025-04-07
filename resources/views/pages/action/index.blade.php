@@ -32,7 +32,7 @@
                                 <h4 class="card-title">Danh sách</h4>
                                 <a href="{{ route('actions.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
-                                    Add Row
+                                    Thêm hành động
                                 </a>
                             </div>
                         </div>

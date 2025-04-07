@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\PermissionController;
 use App\Http\Controllers\Web\PositionController;
 use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->middleware('guest')->prefix('/')->group(function () {
@@ -17,6 +18,15 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::controller(UserController::class)->prefix('users')->group(function () {
+        Route::get('/', 'index')->name('users.index');
+        Route::get('/create', 'create')->name('users.create');
+        Route::post('/create', 'store')->name('users.store');
+        Route::get('/{id}', 'show')->name('users.show');
+        Route::put('/{id}', 'update')->name('users.update');
+        Route::delete('/{id}', 'delete')->name('users.delete');
+    });
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
         Route::get('/', 'index')->name('roles.index');
