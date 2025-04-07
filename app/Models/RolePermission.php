@@ -12,4 +12,19 @@ class RolePermission extends Model
         'role_id',
         'action_id'
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
+    }
+
+    public function action()
+    {
+        return $this->belongsTo(Action::class);
+    }
 }

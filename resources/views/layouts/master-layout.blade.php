@@ -315,8 +315,9 @@
           $("#basic-datatables").DataTable({});
         });
     </script>
-        <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>
-        <script src="/assets/master/js/sweetalert.js"></script>
+    <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script src="/assets/master/js/sweetalert.js"></script>
+    <script src="/assets/master/js/main.js"></script>
 </body>
 
 </html>

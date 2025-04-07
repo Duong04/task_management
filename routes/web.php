@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\ActionController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\DashboardController;
 use App\Http\Controllers\Web\PermissionController;
+use App\Http\Controllers\Web\PositionController;
 use App\Http\Controllers\Web\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +20,11 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::controller(RoleController::class)->prefix('roles')->group(function () {
         Route::get('/', 'index')->name('roles.index');
-        // Route::get('/create', 'create')->name('roles.create');
-        // Route::post('/', 'store')->name('roles.store');
-        // Route::get('/{role}', 'show')->name('roles.show');
-        // Route::get('/{role}/edit', 'edit')->name('roles.edit');
-        // Route::put('/{role}', 'update')->name('roles.update');
-        // Route::delete('/{role}', 'destroy')->name('roles.destroy');
+        Route::get('/create', 'create')->name('roles.create');
+        Route::post('/create', 'store')->name('roles.store');
+        Route::get('/{id}', 'show')->name('roles.show');
+        Route::put('/{id}', 'update')->name('roles.update');
+        Route::delete('/{id}', 'delete')->name('roles.delete');
     });
 
     Route::controller(ActionController::class)->prefix('actions')->group(function () {
@@ -44,4 +44,17 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::put('/{id}', 'update')->name('permissions.update');
         Route::delete('/{id}', 'delete')->name('permissions.delete');
     });
+
+    Route::controller(PositionController::class)->prefix('positions')->group(function () {
+        Route::get('/', 'index')->name('positions.index');
+        Route::get('/create', 'create')->name('positions.create');
+        Route::post('/create', 'store')->name('positions.store');
+        Route::get('/{id}', 'show')->name('positions.show');
+        Route::put('/{id}', 'update')->name('positions.update');
+        Route::delete('/{id}', 'delete')->name('positions.delete');
+    });
+});
+
+Route::fallback(function () {
+    return view('errors.404');
 });

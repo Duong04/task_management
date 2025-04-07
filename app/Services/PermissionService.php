@@ -41,7 +41,6 @@ class PermissionService {
         try {
             return Permission::find($id);
         } catch (\Throwable $th) {
-            toastr()->error($th->getMessage());
             return redirect()->back();
         }
     }

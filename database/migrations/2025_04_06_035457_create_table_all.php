@@ -62,6 +62,7 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique(); 
+            $table->string('décription')->unique(); 
             $table->timestamps();
         });
 

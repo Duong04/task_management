@@ -34,6 +34,11 @@ class ActionController extends Controller
 
     public function show($id) {
         $action = $this->actionService->findById($id);
+
+        if (!$action) {
+            abort(404);
+        }
+
         $permissions = $this->permissionService->all();
         return view('pages.action.update', compact('action', 'permissions'));
     }

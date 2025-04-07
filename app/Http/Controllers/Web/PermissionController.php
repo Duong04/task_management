@@ -37,6 +37,10 @@ class PermissionController extends Controller
     public function show($id)
     {
         $permission = $this->permissionService->findById($id);
+
+        if (!$permission) {
+            abort(404);
+        }
         $actions = $this->actionService->all();
         return view('pages.permission.update', compact('permission', 'actions'));
     }

@@ -3,7 +3,7 @@
     <div class="container">
         <div class="page-inner">
             <div class="page-header">
-                <h3 class="fw-bold mb-3">Vai trò</h3>
+                <h3 class="fw-bold mb-3">Chức vụ</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="nav-home">
                         <a href="#">
@@ -20,7 +20,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Vai trò</a>
+                        <a href="#">Chức vụ</a>
                     </li>
                 </ul>
             </div>
@@ -28,7 +28,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Quản lý vai trò</h4>
+                            <h4 class="card-title">Quản lý chức vụ</h4>
                         </div>
                         <div class="card-body">
                             <div class="row p-3">
@@ -43,16 +43,16 @@
                                         </div>
                                         <div>
                                             <div class="img-users d-flex justify-content-end position-relative">
-                                                <a href="{{ route('roles.create') }}" class="btn btn-primary btn-round ms-auto">Thêm vai trò</a>
+                                                <a href="{{ route('positions.create') }}" class="btn btn-primary btn-round ms-auto">Thêm chức vụ</a>
                                             </div>
                                             <div class="img-users d-flex justify-content-end position-relative">
-                                                <p class="w-75 mt-2 text-end">Thêm vai trò nếu chưa tồn tại.</p>
+                                                <p class="w-75 mt-2 text-end">Thêm chức vụ nếu chưa tồn tại.</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- Role item - repeat this block for each role -->
-                                @foreach ($roles as $item)
+                                @foreach ($positions as $item)
                                     <div class="col-4 p-2">
                                         <div class="p-4 m-h-170 bg-white rounded-3 shadow d-flex justify-content-between">
                                             <div class="d-flex flex-column justify-content-between">
@@ -60,11 +60,11 @@
                                                 <div class="pt-3">
                                                     <h5>{{ $item->name }}</h5>
                                                     <div class="d-flex">
-                                                        <a href="{{ route('roles.show', ['id' => $item->id]) }}" data-bs-toggle="tooltip" title="Sửa"
+                                                        <a href="{{ route('positions.show', ['id' => $item->id]) }}" data-bs-toggle="tooltip" title="Sửa"
                                                             class="btn btn-link btn-primary btn-lg p-0">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <form id="delete-form-{{ $item->id }}" method="POST" action="{{ route('roles.delete', ['id' => $item->id]) }}">
+                                                        <form id="delete-form-{{ $item->id }}" method="POST" action="{{ route('positions.delete', ['id' => $item->id]) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button data-bs-toggle="tooltip" title="Xóa"

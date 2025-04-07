@@ -104,7 +104,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="icon-menu.html">
+                                <a href="{{ route('positions.index') }}">
                                     <span class="sub-item">Chức vụ</span>
                                 </a>
                             </li>

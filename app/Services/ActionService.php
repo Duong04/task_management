@@ -40,9 +40,8 @@ class ActionService
 
     public function findById($id) {
         try {
-            return Action::findOrFail($id);
+            return Action::find($id);
         } catch (\Throwable $th) {
-            toastr()->error($th->getMessage());
             return redirect()->back();
         }
     }
