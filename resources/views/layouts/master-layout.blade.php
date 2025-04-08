@@ -35,6 +35,7 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="/assets/master/css/demo.css" />
     <link rel="stylesheet" href="/assets/master/css/admin.css" />
+    @yield('css')
 </head>
 
 <body>
@@ -318,6 +319,7 @@
     <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>
     <script src="/assets/master/js/sweetalert.js"></script>
     <script src="/assets/master/js/main.js"></script>
+    @yield('script')
 </body>
 
 </html>

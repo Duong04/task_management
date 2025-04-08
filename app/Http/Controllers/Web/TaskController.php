@@ -5,13 +5,19 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\TaskService;
+use App\Services\UserService;
+use App\Services\ProjectService;
 
 class TaskController extends Controller
 {
     private $taskService;
+    private $userService;
+    private $projectService;
 
-    public function __construct(TaskService $taskService)
+    public function __construct(TaskService $taskService, UserService $userService, ProjectService $projectService)
     {
+        $this->userService = $userService;
+        $this->projectService = $projectService;
         $this->taskService = $taskService;
     }
 
@@ -19,5 +25,12 @@ class TaskController extends Controller
     {
         $tasks = $this->taskService->all();
         return view('pages.task.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+        $users = $this->userService->getAllUser();
+        $projects = $this->projectService->all();
+        return view('pages.task.create', compact('users', 'projects'));
     }
 }

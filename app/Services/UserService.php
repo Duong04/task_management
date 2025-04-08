@@ -16,6 +16,17 @@ class UserService {
         }
     }
 
+    public function getAllUser() {
+        try {
+            return User::orderByDesc('id')->whereHas('role', function ($query) {
+                $query->where('name', '!=', 'Supper Admin');
+            })->get();
+        } catch (\Throwable $th) {
+            toastr()->error($th->getMessage());
+            return redirect()->back();
+        }
+    }
+
     public function create($request) {
         try {
             $data = $request->validated();

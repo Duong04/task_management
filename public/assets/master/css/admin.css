@@ -203,3 +203,35 @@
     color: #be185d;
 }
   
+.upload-box {
+    border: 2px dashed #0b2dee;
+    padding: 35px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.upload-box:hover {
+    background-color: #d6e5fc;
+}
+
+.upload-box i,
+.upload-box span {
+    pointer-events: none;
+}
+
+.text-purple {
+    color: #0b2dee;
+}
+
+.btn-plus,
+.btn-remove {
+    cursor: pointer;
+}
+
+.btn-plus:hover,
+.btn-remove:hover {
+    opacity: 0.8;
+}
+

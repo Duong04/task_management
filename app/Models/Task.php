@@ -16,6 +16,12 @@ class Task extends Model
         'status',
         'priority',
         'project_id',
-        'assigned_to'
+        'assigned_to',
+        'created_by'
     ];
+
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable');
+    }
 }

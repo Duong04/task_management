@@ -30,7 +30,7 @@
                         <div class="card-header">
                             <div class="d-flex align-item-center">
                                 <h4 class="card-title">Danh sách</h4>
-                                <a href="{{ route('projects.create') }}" class="btn btn-primary btn-round ms-auto">
+                                <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
                                     Tạo công việc
                                 </a>

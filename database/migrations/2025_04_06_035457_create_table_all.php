@@ -120,8 +120,10 @@ return new class extends Migration
             $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('low'); 
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('assigned_to'); 
+            $table->unsignedBigInteger('created_by'); 
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
             $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
@@ -134,8 +136,10 @@ return new class extends Migration
             $table->enum('priority', ['low', 'medium', 'high', 'urgent'])->default('low'); 
             $table->unsignedBigInteger('task_id'); 
             $table->unsignedBigInteger('assigned_to'); 
+            $table->unsignedBigInteger('created_by'); 
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->foreign('assigned_to')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
 
