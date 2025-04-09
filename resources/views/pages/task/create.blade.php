@@ -50,7 +50,7 @@
                 </ul>
             </div>
             <div class="row">
-                <form class="row col-12" action="{{ route('permissions.store') }}" method="POST">
+                <form class="row col-12" action="{{ route('tasks.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group col-4 {{ $errors->first('name') ? ' has-error' : '' }}">
                         <label for="name">Tên công việc</label>
@@ -60,17 +60,17 @@
                             <span class="text-danger fs-7">{{ $errors->first('name') }}</span>
                         @endif
                     </div>
-                    <div class="form-group col-4 {{ $errors->first('project') ? ' has-error' : '' }}">
-                        <label for="project">Chọn dự án</label>
-                        <select class="form-control" name="project" id="project">
+                    <div class="form-group col-4 {{ $errors->first('project_id') ? ' has-error' : '' }}">
+                        <label for="project_id">Chọn dự án</label>
+                        <select class="form-control" name="project_id" id="project_id">
                             <option value="">-- Chọn dự án --</option>
                             @foreach ($projects as $item)
-                                <option {{ old('project') == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
+                                <option {{ old('project_id') == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
                                     {{ $item->name }} ({{ $status_projects[$item->status] }})</option>
                             @endforeach
                         </select>
-                        @if ($errors->first('project'))
-                            <span class="text-danger fs-7">{{ $errors->first('project') }}</span>
+                        @if ($errors->first('project_id'))
+                            <span class="text-danger fs-7">{{ $errors->first('project_id') }}</span>
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('assigned_to') ? ' has-error' : '' }}">
@@ -116,36 +116,50 @@
                     </div>
                     <div class="form-group col-8 {{ $errors->first('description') ? ' has-error' : '' }}">
                         <label for="description">Mô tả</label>
-                        <textarea name="description" class="form-control" placeholder="Mô tả" id="description" cols="30" rows="10">{{ old('value') }}</textarea>
+                        <textarea name="description" class="form-control" placeholder="Mô tả" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
                         @if ($errors->first('description'))
                             <span class="text-danger fs-7">{{ $errors->first('description') }}</span>
                         @endif
                     </div>
+                    @php
+                        $attachments = old('attachments', [ ['description' => '', 'file' => null] ]);
+                    @endphp
                     <div class="form-group col-4">
                         <label>Tệp đính kèm</label>
                         <div id="attachment-wrapper">
-                            <div class="row d-flex flex-column mb-2 attachment-item py-2">
-                                <div class="col-md-12 d-flex align-items-center">
-                                    <div class="text-danger">
-                                        <i class="fas fa-trash btn-remove"></i>
+                            @foreach ($attachments as $index => $attachment)
+                                <div class="row d-flex flex-column mb-2 attachment-item py-2" data-index="{{ $index }}">
+                                    <div class="col-md-12 d-flex align-items-center mb-2">
+                                        <div class="text-danger me-2 cursor-pointer btn-remove">
+                                            <i class="fas fa-trash"></i>
+                                        </div>
+                                        <div class="text-primary cursor-pointer btn-plus add-attachment">
+                                            <i class="fas fa-plus"></i>
+                                        </div>
                                     </div>
-                                    <div class="text-primary ms-2">
-                                        <i class="fas fa-plus btn-plus add-attachment"></i>
+                    
+                                    <div class="col-md-12 my-2">
+                                        <input type="text" name="attachments[{{ $index }}][description]" class="form-control"
+                                            value="{{ $attachment['description'] }}" placeholder="Mô tả tệp" />
+                                        @error("attachments.$index.description")
+                                            <span class="text-danger fs-7">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                    
+                                    <div class="col-md-12">
+                                        <label class="upload-box w-100 text-center">
+                                            <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
+                                            <span class="text-purple">Upload File</span>
+                                            <small class="file-name text-muted text-truncate d-block mt-1"></small>
+                                            <input type="file" name="attachments[{{ $index }}][file]"
+                                                class="form-control upload-input" hidden />
+                                        </label>
+                                        @error("attachments.$index.file")
+                                            <span class="text-danger fs-7">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-12 my-2">
-                                    <input type="text" name="attachments[0][description]" class="form-control"
-                                        placeholder="Mô tả tệp" />
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="upload-box w-100 text-center">
-                                        <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
-                                        <span class="text-purple">Upload File</span>
-                                        <input type="file" name="attachments[0][file]" class="form-control upload-input"
-                                            hidden />
-                                    </label>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
 
@@ -159,56 +173,63 @@
 @endsection
 @section('script')
     <script>
-        let attachmentIndex = 1;
-
-        // Hàm tạo HTML cho 1 item mới
-        function createAttachmentItem(index) {
-            const newItem = document.createElement('div');
-            newItem.classList.add('row', 'd-flex', 'flex-column', 'mb-2', 'attachment-item', 'py-2');
-            newItem.innerHTML = `
-                <div class="col-md-12 d-flex align-items-center">
-                    <div class="text-danger">
-                        <i class="fas fa-trash btn-remove" style="cursor:pointer;"></i>
-                    </div>
-                    <div class="text-primary ms-2">
-                        <i class="fas fa-plus btn-plus add-attachment" style="cursor:pointer;"></i>
-                    </div>
-                </div>
-                <div class="col-md-12 my-2">
-                    <input type="text" name="attachments[${index}][description]" class="form-control" placeholder="Mô tả tệp" />
-                </div>
-                <div class="col-md-12">
-                    <label class="upload-box w-100 text-center">
-                        <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
-                        <span class="text-purple">Upload File</span>
-                        <input type="file" name="attachments[${index}][file]" class="form-control upload-input" hidden />
-                    </label>
-                </div>
-            `;
-                    return newItem;
-        }
-
-        // Ủy quyền sự kiện click trên toàn bộ wrapper
-        document.getElementById('attachment-wrapper').addEventListener('click', function(e) {
-            const target = e.target;
-
-            // Nếu là nút xóa
-            if (target.classList.contains('btn-remove')) {
-                target.closest('.attachment-item').remove();
-            }
-
-            // Nếu là nút thêm
-            if (target.classList.contains('add-attachment')) {
-                const wrapper = document.getElementById('attachment-wrapper');
-                const newItem = createAttachmentItem(attachmentIndex++);
-                wrapper.appendChild(newItem);
-            }
-        });
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-remove')) {
-                e.target.closest('.attachment-item').remove();
-            }
+        document.addEventListener("DOMContentLoaded", function () {
+            let wrapper = document.getElementById("attachment-wrapper");
+    
+            // Cập nhật index hiện tại dựa theo phần tử cuối
+            let index = wrapper.querySelectorAll(".attachment-item").length;
+    
+            // Thêm file mới
+            wrapper.addEventListener("click", function (e) {
+                if (e.target.closest(".add-attachment")) {
+                    let newItem = document.createElement("div");
+                    newItem.classList.add("row", "d-flex", "flex-column", "mb-2", "attachment-item", "py-2");
+                    newItem.setAttribute("data-index", index);
+    
+                    newItem.innerHTML = `
+                        <div class="col-md-12 d-flex align-items-center mb-2">
+                            <div class="text-danger me-2 cursor-pointer btn-remove">
+                                <i class="fas fa-trash"></i>
+                            </div>
+                            <div class="text-primary cursor-pointer btn-plus add-attachment">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-12 my-2">
+                            <input type="text" name="attachments[${index}][description]" class="form-control" placeholder="Mô tả tệp" />
+                        </div>
+                        <div class="col-md-12">
+                            <label class="upload-box w-100 text-center">
+                                <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
+                                <span class="text-purple">Upload File</span>
+                                <small class="file-name text-muted text-truncate d-block mt-1"></small>
+                                <input type="file" name="attachments[${index}][file]" class="form-control upload-input" hidden />
+                            </label>
+                        </div>
+                    `;
+    
+                    wrapper.appendChild(newItem);
+                    index++;
+                }
+            });
+    
+            // Xoá file
+            wrapper.addEventListener("click", function (e) {
+                if (e.target.closest(".btn-remove")) {
+                    let item = e.target.closest(".attachment-item");
+                    if (item) item.remove();
+                }
+            });
+    
+            // Hiển thị tên file khi chọn
+            wrapper.addEventListener("change", function (e) {
+                if (e.target.matches(".upload-input")) {
+                    let fileInput = e.target;
+                    let fileName = fileInput.files[0]?.name || '';
+                    fileInput.closest("label").querySelector(".file-name").textContent = fileName;
+                }
+            });
         });
     </script>
+    
 @endsection

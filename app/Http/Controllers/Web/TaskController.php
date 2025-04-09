@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\TaskService;
 use App\Services\UserService;
 use App\Services\ProjectService;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 {
@@ -32,5 +33,9 @@ class TaskController extends Controller
         $users = $this->userService->getAllUser();
         $projects = $this->projectService->all();
         return view('pages.task.create', compact('users', 'projects'));
+    }
+
+    public function store(TaskRequest $request) {
+        return $this->taskService->create($request);
     }
 }

@@ -42,10 +42,13 @@
                                     <thead>
                                         <tr>
                                             <th>Stt</th>
+                                            <th>Code</th>
+                                            <th>Tên công việc</th>
                                             <th>Tên dự án</th>
-                                            <th>Mô tả</th>
                                             <th>Trạng thái</th>
+                                            <th>Độ ưu tiên</th>
                                             <th>Người tạo</th>
+                                            <th>Người thực hiện</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Hành động</th>
@@ -54,16 +57,19 @@
                                     <tfoot>
                                         <tr>
                                             <th>Stt</th>
+                                            <th>Code</th>
+                                            <th>Tên công việc</th>
                                             <th>Tên dự án</th>
-                                            <th>Mô tả</th>
                                             <th>Trạng thái</th>
+                                            <th>Độ ưu tiên</th>
                                             <th>Người tạo</th>
+                                            <th>Người thực hiện</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Hành động</th>
                                         </tr>
                                     </tfoot>
-                                    {{-- <tbody>
+                                    <tbody>
                                         @php
                                             $i = 1;
                                             $status = [
@@ -72,27 +78,43 @@
                                                 'completed' => 'Đã hoàn thành',
                                             ];
 
+                                            $priorities = [
+                                                'low' => 'Thấp',
+                                                'medium' => 'Trung bình',
+                                                'high' => 'Cao',
+                                            ];
+
                                             $status_color = [
                                                 'not_started' => 'badge-gray',
                                                 'in_progress' => 'badge-blue',
                                                 'completed' => 'badge-green',
                                             ];
                                         @endphp
-                                        @foreach ($projects as $item)
+                                        @foreach ($tasks as $item)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                <td><div>{{ $item->name ?? 'N/A' }}</div></td>
-                                                <td><div>{{ $item->description ?? 'N/A' }}</div></td>
-                                                <td><div><span class="badge-custom {{ $status_color[$item->status] }}">{{ $status[$item->status] ?? 'N/A' }}</span></div></td>
-                                                <td><div>{{ $item->createdBy->name ?? 'N/A' }}</div></td>
-                                                <td><div>{{ $item->start_date ?? 'N/A' }}</div></td>
-                                                <td><div>{{ $item->end_date ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->task_code ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->name ?? 'N/A' }}</div></td>
+                                                <td>
+                                                    <div style="width: 150px;">
+                                                        {{ $item->project 
+                                                            ? ($item->project->name . ' (' . ($status[$item->project->status] ?? 'Unknown') . ')') 
+                                                            : 'N/A' 
+                                                        }}
+                                                    </div>
+                                                </td>                                                
+                                                <td><div style="width: 150px;"><span class="badge-custom {{ $status_color[$item->status] }}">{{ $status[$item->status] ?? 'N/A' }}</span></div></td>
+                                                <td><div style="width: 150px;"><span class="badge-custom {{ $status_color[$item->status] }}">{{ $priorities[$item->priority] ?? 'N/A' }}</span></div></td>
+                                                <td><div style="width: 150px;">{{ $item->createdBy->name ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->assignedTo->name ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->start_date ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->end_date ?? 'N/A' }}</div></td>
                                                 <td>
                                                     <div class="form-button-action">
-                                                        <a href="{{ route('projects.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                                        <a href="{{ route('tasks.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
                                                           <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('projects.delete', ['id' => $item->id]) }}">
+                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('tasks.delete', ['id' => $item->id]) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button
@@ -109,7 +131,7 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody> --}}
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
