@@ -1,10 +1,10 @@
-@extends('layouts.master-layout', ['title' => 'Admin - Danh sách công việc'])
+@extends('layouts.master-layout', ['title' => 'Admin - Danh sách nhiệm vụ con'])
 
 @section('content')
     <div class="container">
         <div class="page-inner">
             <div class="page-header">
-                <h3 class="fw-bold mb-3">Quản lý công việc</h3>
+                <h3 class="fw-bold mb-3">Quản lý nhiệm vụ con</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="nav-home">
                         <a href="#">
@@ -21,7 +21,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Công việc</a>
+                        <a href="#">Nhiệm vụ con</a>
                     </li>
                 </ul>
             </div>
@@ -31,27 +31,25 @@
                         <div class="card-header">
                             <div class="d-flex align-item-center">
                                 <h4 class="card-title">Danh sách</h4>
-                                <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ms-auto">
+                                <a href="{{ route('subtasks.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
-                                    Tạo công việc
+                                    Tạo nhiệm vụ con
                                 </a>
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="basic-datatables" class="display table table-hover">
-                                    <thead class="table-secondary">
+                                <table id="basic-datatables" class="display table table-striped table-hover">
+                                    <thead>
                                         <tr>
                                             <th>Stt</th>
-                                            <th>Code</th>
+                                            <th>Tên nhiệm vụ</th>
                                             <th>Tên công việc</th>
-                                            <th>Tên dự án</th>
-                                            <th>Người tạo</th>
-                                            <th>Người thực hiện</th>
-                                            <th>Tiến độ</th>
                                             <th>Trạng thái</th>
                                             <th>Độ ưu tiên</th>
-                                            <th>Hạn hoàn thành</th>
+                                            <th>Người tạo</th>
+                                            <th>Người thực hiện</th>
+                                            <th>Ngày hết hạn</th>
                                             <th class="text-center">Thao tác</th>
                                         </tr>
                                     </thead>
@@ -59,9 +57,9 @@
                                         @php
                                             $i = 1;
                                             $status = [
-                                                'not_started' => 'Chưa bắt đầu',
-                                                'in_progress' => 'Đang thực hiện',
-                                                'completed' => 'Hoàn thành',
+                                                'not_started' => 'Chưa hoạt động',
+                                                'in_progress' => 'Đang xử lý',
+                                                'completed' => 'Đã hoàn thành',
                                             ];
 
                                             $priorities = [
@@ -82,64 +80,32 @@
                                                 'high' => 'badge-red',    
                                             ];
                                         @endphp
-                                        @foreach ($tasks as $item)
+                                        @foreach ($subtasks as $item)
                                             <tr>
                                                 <td>{{ $i++ }}</td>
-                                                <td><div style="width: 150px;"><span class="badge-custom badge-blue">{{ $item->task_code ?? 'N/A' }}</span></div></td>
                                                 <td><div style="width: 150px;">{{ $item->name ?? 'N/A' }}</div></td>
                                                 <td>
                                                     <div style="width: 150px;">
-                                                        {{ $item->project 
-                                                            ? ($item->project->name . ' (' . ($status[$item->project->status] ?? 'Unknown') . ')') 
+                                                        {{ $item->task 
+                                                            ? ($item->task->name . ' (' . ($status[$item->task->status] ?? 'Unknown') . ')') 
                                                             : 'N/A' 
                                                         }}
                                                     </div>
-                                                </td>     
-                                                <td>
-                                                    <div class="d-flex align-items-center" style="width: 250px">
-                                                        <div class="d-block avatar avatar-sm" style="width: 50px;"><img class="rounded-circle object-fit-cover" src="{{ $item->createdBy->avatar }}" width="45px" height="45px" alt=""></div>
-                                                        <div class="d-flex flex-column justify-content-center align-item-center ms-2">
-                                                            <b>{{ $item->createdBy->name ?? 'N/A' }}</b>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center" style="width: 250px">
-                                                        <div class="d-block avatar avatar-sm" style="width: 50px;"><img class="rounded-circle object-fit-cover" src="{{ $item->assignedTo->avatar }}" width="45px" height="45px" alt=""></div>
-                                                        <div class="d-flex flex-column justify-content-center align-item-center ms-2">
-                                                            <b>{{ $item->assignedTo->name ?? 'N/A' }}</b>
-                                                        </div>
-                                                        
-                                                    </div>
-                                                </td>                                           
-                                                <td>
-                                                    <div style="width: 150px;">
-                                                        <div style="font-weight: bold; margin-bottom: 4px;">
-                                                            {{ $item->progress }}%
-                                                        </div>
-                                                        <div style="background-color: #e9ecef; border-radius: 10px; height: 8px; overflow: hidden;">
-                                                            <div style="
-                                                                width: {{ $item->progress }}%;
-                                                                background-color: #28a745;
-                                                                height: 100%;
-                                                            "></div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                
+                                                </td>                                                
                                                 <td><div style="width: 150px;"><span class="badge-custom {{ $status_color[$item->status] }}">{{ $status[$item->status] ?? 'N/A' }}</span></div></td>
                                                 <td><div style="width: 150px;"><span class="badge-custom {{ $priority_color[$item->priority] }}">{{ $priorities[$item->priority] ?? 'N/A' }}</span></div></td>
-                                                <td><div style="width: 150px;">{{ format_date($item->due_date) ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->createdBy->name ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->assignedTo->name ?? 'N/A' }}</div></td>
+                                                <td><div style="width: 150px;">{{ $item->due_date ?? 'N/A' }}</div></td>
                                                 <td>
                                                     <div class="form-button-action">
                                                         <a href="{{ route('tasks.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Xem chi tiết" class="btn btn-link text-warning" data-original-title="Edit Task">
                                                             <i class="fa fa-eye"></i>
                                                           </a>
-                                                          <a href="{{ route('tasks.edit', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link text-primary" data-original-title="Edit Task">
+                                                          <a href="{{ route('tasks.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link text-primary" data-original-title="Edit Task">
                                                             <i class="fa fa-edit"></i>
                                                           </a>
-                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('tasks.delete', ['id' => $item->id]) }}">
+                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('subtasks.delete', ['id' => $item->id]) }}">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button

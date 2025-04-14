@@ -48,7 +48,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="components/buttons.html">
+                                <a href="{{ route('subtasks.index') }}">
                                     <span class="sub-item">Nhiệm vụ con</span>
                                 </a>
                             </li>
@@ -70,6 +70,12 @@
                     <a href="{{ route('users.index') }}">
                         <i class="fas fa-user"></i>
                         <p>Quản lý người dùng</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('departments.index') }}">
+                        <i class="fas fa-user"></i>
+                        <p>Quản lý phòng ban</p>
                     </a>
                 </li>
                 <li class="nav-item">

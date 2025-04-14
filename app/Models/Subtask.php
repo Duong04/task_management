@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Subtask extends Model
 {
-    protected $table = 'tasks';
+    protected $table = 'subtasks';
     protected $fillable = [
         'name',
-        'task_code',
-        'description',
         'due_date',
+        'description',
         'status',
         'priority',
-        'project_id',
+        'task_id',
         'assigned_to',
-        'created_by',
-        'progress',
+        'created_by'
     ];
 
     public function attachments()
@@ -25,9 +23,9 @@ class Task extends Model
         return $this->morphMany(Attachment::class, 'attachable');
     }
 
-    public function project()
+    public function task()
     {
-        return $this->belongsTo(Project::class, 'project_id');
+        return $this->belongsTo(Task::class, 'project_id');
     }
 
     public function assignedTo()

@@ -1,4 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Danh sách quyền'])
+
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -49,16 +50,6 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Stt</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Create At</th>
-                                            <th>Update At</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         @php
                                             $i = 1;

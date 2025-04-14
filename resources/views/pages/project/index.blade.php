@@ -1,4 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Danh sách dự án'])
+
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -45,25 +46,13 @@
                                             <th>Hành động</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Stt</th>
-                                            <th>Tên dự án</th>
-                                            <th>Mô tả</th>
-                                            <th>Trạng thái</th>
-                                            <th>Người tạo</th>
-                                            <th>Ngày bắt đầu</th>
-                                            <th>Ngày kết thúc</th>
-                                            <th>Hành động</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         @php
                                             $i = 1;
                                             $status = [
-                                                'not_started' => 'Chưa hoạt động',
-                                                'in_progress' => 'Đang xử lý',
-                                                'completed' => 'Đã hoàn thành',
+                                                'not_started' => 'Chưa bắt đầu',
+                                                'in_progress' => 'Đang thực hiện',
+                                                'completed' => 'Hoàn thành',
                                             ];
 
                                             $status_color = [

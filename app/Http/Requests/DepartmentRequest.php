@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PositionRequest extends FormRequest
+class DepartmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class PositionRequest extends FormRequest
         $id = $this->id;
         
         $rules = [
-            'name' => 'required|string|max:255|unique:positions,name',
+            'name' => 'required|string|max:255|unique:departments,name',
             'description' => 'nullable',
         ];
 
@@ -48,7 +48,7 @@ class PositionRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'Tên chức vụ',
+            'name' => 'Tên phòng ban',
             'description' => 'Mô tả',
         ]; 
     }

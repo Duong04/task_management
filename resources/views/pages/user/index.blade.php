@@ -1,4 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Danh sahs người dùng'])
+
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -49,22 +50,6 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Stt</th>
-                                            <th>Code</th>
-                                            <th>Người dùng</th>
-                                            <th>Vai trò</th>
-                                            <th>Chức vụ</th>
-                                            <th>Trạng thái</th>
-                                            <th>Giới tính</th>
-                                            <th>Phone</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Ngày sinh</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
                                         @php
                                             $i = 1;

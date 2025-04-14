@@ -1,4 +1,4 @@
-@extends('layouts.auth-layout')
+@extends('layouts.auth-layout', ['title' => 'Đăng nhập'])
 @section('content')
     <div class="auth-main">
         <div class="auth-wrapper v3">
@@ -10,18 +10,18 @@
                     <form action="{{ route('action.login') }}" method="POST" class="card-body">
                         @csrf
                         <div class="d-flex justify-content-between align-items-end mb-4">
-                            <h3 class="mb-0"><b>Login</b></h3>
+                            <h3 class="mb-0"><b>Đăng nhập</b></h3>
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label">Email Address</label>
-                            <input value="{{ old('email') }}" name="email" type="email" class="form-control" placeholder="Email Address" />
+                            <label class="form-label">Email</label>
+                            <input value="{{ old('email') }}" name="email" type="email" class="form-control" placeholder="Email" />
                             @if ($errors->first('email'))
                                 <span class="text-danger fs-7">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <div class="form-group mb-3">
-                            <label class="form-label">Password</label>
-                            <input value="{{ old('password') }}" name="password" type="password" class="form-control" placeholder="Password" />
+                            <label class="form-label">Mật khẩu</label>
+                            <input value="{{ old('password') }}" name="password" type="password" class="form-control" placeholder="Mật khẩu" />
                             @if ($errors->first('password'))
                                 <span class="text-danger fs-7">{{ $errors->first('password') }}</span>
                             @endif
@@ -30,15 +30,14 @@
                             <div class="form-check">
                                 <input class="form-check-input input-primary" type="checkbox" id="customCheckc1"
                                     checked="" />
-                                <label class="form-check-label text-muted" for="customCheckc1">Keep me sign in</label>
+                                <label class="form-check-label text-muted" for="customCheckc1">Lưu thông tin đăng nhập</label>
                             </div>
-                            <h5 class="text-secondary f-w-400">Forgot Password?</h5>
                         </div>
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button type="submit" class="btn btn-primary">Đăng nhập</button>
                         </div>
                         <div class="saprator mt-3">
-                            <span>Login with</span>
+                            <span>Đăng nhập với</span>
                         </div>
                         <div class="row">
                             <div class="col-4">
@@ -72,13 +71,6 @@
                     <!-- <div class=""> -->
                     <div class="col my-1">
                         <p class="m-0">Copyright © <a href="#">Sugar</a></p>
-                    </div>
-                    <div class="col-auto my-1">
-                        <ul class="list-inline footer-link mb-0">
-                            <li class="list-inline-item"><a href="#">Home</a></li>
-                            <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                            <li class="list-inline-item"><a href="#">Contact us</a></li>
-                        </ul>
                     </div>
                     <!-- </div> -->
                 </div>

@@ -22,13 +22,13 @@
         $status_projects = [
             'not_started' => 'Chưa bắt đầu',
             'in_progress' => 'Đang thực hiện',
-            'completed' => 'Hoàn thành',
+            'completed' => 'Đã hoàn thành',
         ];
     @endphp
     <div class="container">
         <div class="page-inner">
             <div class="page-header">
-                <h3 class="fw-bold mb-3"><a href="{{ route('tasks.index') }}" class="me-1"><i class="fas fa-arrow-left"></i></a> Cập nhật công việc</h3>
+                <h3 class="fw-bold mb-3">Cập nhật công việc</h3>
                 <ul class="breadcrumbs mb-3">
                     <li class="nav-home">
                         <a href="{{ route('dashboard') }}">
@@ -54,7 +54,7 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group col-4 {{ $errors->first('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên công việc ( <span class="text-danger">*</span> )</label>
+                        <label for="name">Tên công việc</label>
                         <input value="{{ $task->name }}" type="text" class="form-control" id="name" name="name"
                             placeholder="Tên công việc" />
                         @if ($errors->first('name'))
@@ -62,7 +62,7 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('project_id') ? ' has-error' : '' }}">
-                        <label for="project_id">Chọn dự án ( <span class="text-danger">*</span> )</label>
+                        <label for="project_id">Chọn dự án</label>
                         <select class="form-control" name="project_id" id="project_id">
                             <option value="">-- Chọn dự án --</option>
                             @foreach ($projects as $item)
@@ -74,25 +74,12 @@
                             <span class="text-danger fs-7">{{ $errors->first('project_id') }}</span>
                         @endif
                     </div>
-                    <div class="form-group col-4 {{ $errors->first('created_by') ? ' has-error' : '' }}">
-                        <label for="created_by">Người tạo ( <span class="text-danger">*</span> )</label>
-                        <select class="form-control" name="created_by" id="created_by">
-                            <option value="">-- Người tạo --</option>
-                            @foreach ($users as $item)
-                                <option {{ $task->created_by == $item->id || auth()->id() == $item->id ? 'selected' : '' }}
-                                    value="{{ $item->id }}">{{ $item->name }} ({{ $item->role->name }})</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->first('created_by'))
-                            <span class="text-danger fs-7">{{ $errors->first('created_by') }}</span>
-                        @endif
-                    </div>
                     <div class="form-group col-4 {{ $errors->first('assigned_to') ? ' has-error' : '' }}">
-                        <label for="assigned_to">Người thực hiện ( <span class="text-danger">*</span> )</label>
+                        <label for="assigned_to">Người thực hiện</label>
                         <select class="form-control" name="assigned_to" id="assigned_to">
                             <option value="">-- Người thực hiện --</option>
                             @foreach ($users as $item)
-                                <option {{ $task->assigned_to == $item->id || auth()->id() == $item->id ? 'selected' : '' }}
+                                <option {{ $task->assigned_to == $item->id ? 'selected' : '' }}
                                     value="{{ $item->id }}">{{ $item->name }} ({{ $item->role->name }})</option>
                             @endforeach
                         </select>
@@ -100,8 +87,8 @@
                             <span class="text-danger fs-7">{{ $errors->first('assigned_to') }}</span>
                         @endif
                     </div>
-                    <div class="form-group col-4 {{ $errors->first('priority') ? ' has-error' : '' }}">
-                        <label for="priority">Mức độ ưu tiên ( <span class="text-danger">*</span> )</label>
+                    <div class="form-group col-3 {{ $errors->first('priority') ? ' has-error' : '' }}">
+                        <label for="priority">Mức độ ưu tiên</label>
                         <select class="form-control" name="priority" id="priority">
                             <option value="">-- Chọn độ ưu tiên --</option>
                             <option {{ $task->priority == 'low' ? 'selected' : '' }} value="low">Thấp</option>
@@ -112,37 +99,52 @@
                             <span class="text-danger fs-7">{{ $errors->first('priority') }}</span>
                         @endif
                     </div>
-                    <div class="form-group col-4 {{ $errors->first('status') ? ' has-error' : '' }}">
-                        <label for="status">Trạng thái ( <span class="text-danger">*</span> )</label>
+                    <div class="form-group col-3 {{ $errors->first('status') ? ' has-error' : '' }}">
+                        <label for="status">Trạng thái</label>
                         <select class="form-control" name="status" id="status">
                             <option value="">-- Trạng thái --</option>
-                            <option {{ $task->status == 'not_started' ? 'selected' : '' }} value="not_started">Chưa bắt đầu</option>
-                            <option {{ $task->status == 'in_progress' ? 'selected' : '' }} value="in_progress">Đang thực hiện</option>
-                            <option {{ $task->status == 'completed' ? 'selected' : '' }} value="completed">Hoàn thành</option>
+                            <option {{ $task->status == 'not_started' ? 'selected' : '' }} value="not_started">Chưa hoạt động</option>
+                            <option {{ $task->status == 'in_progress' ? 'selected' : '' }} value="in_progress">Đang xử lý</option>
+                            <option {{ $task->status == 'completed' ? 'selected' : '' }} value="completed">Đã hoàn thành</option>
                         </select>
                         @if ($errors->first('status'))
                             <span class="text-danger fs-7">{{ $errors->first('status') }}</span>
                         @endif
                     </div>
-                    <div class="form-group col-4 {{ $errors->first('due_date') ? ' has-error' : '' }}">
-                        <label for="due_date">Ngày hoàn thành ( <span class="text-danger">*</span> )</label>
-                        <input value="{{ $task->due_date }}" type="date" class="form-control" id="due_date"
-                            name="due_date" />
-                        @if ($errors->first('due_date'))
-                            <span class="text-danger fs-7">{{ $errors->first('due_date') }}</span>
+                    <div class="form-group col-3 {{ $errors->first('start_date') ? ' has-error' : '' }}">
+                        <label for="start_date">Ngày bắt đầu</label>
+                        <input value="{{ $task->start_date }}" type="date" class="form-control" id="start_date"
+                            name="start_date" />
+                        @if ($errors->first('start_date'))
+                            <span class="text-danger fs-7">{{ $errors->first('start_date') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group col-3 {{ $errors->first('end_date') ? ' has-error' : '' }}">
+                        <label for="end_date">Ngày kết thúc</label>
+                        <input value="{{ $task->end_date }}" type="date" class="form-control" id="end_date"
+                            name="end_date" />
+                        @if ($errors->first('end_date'))
+                            <span class="text-danger fs-7">{{ $errors->first('end_date') }}</span>
+                        @endif
+                    </div>
+                    <div class="form-group col-8 {{ $errors->first('description') ? ' has-error' : '' }}">
+                        <label for="description">Mô tả</label>
+                        <textarea name="description" class="form-control" placeholder="Mô tả" id="description" cols="30" rows="10">{{ $task->description }}</textarea>
+                        @if ($errors->first('description'))
+                            <span class="text-danger fs-7">{{ $errors->first('description') }}</span>
                         @endif
                     </div>
                     @php
                         $attachments = $task->attachments;
                     @endphp
-                    <div class="form-group col-12">
+                    <div class="form-group col-4">
                         <label>Tệp đính kèm</label>
                         <div id="add-attachment-alone" class="text-primary cursor-pointer my-2 d-none btn" data-bs-toggle="tooltip" title="Thêm tệp">
                             <i class="fas fa-plus"></i>
                         </div>
-                        <div id="attachment-wrapper" class="row">
+                        <div id="attachment-wrapper">
                             @foreach ($attachments as $index => $attachment)
-                                <div class="col-4 d-flex flex-column mb-2 attachment-item py-2" data-index="{{ $index }}">
+                                <div class="row d-flex flex-column mb-2 attachment-item py-2" data-index="{{ $index }}">
                                     <div class="col-md-12 d-flex align-items-center mb-2">
                                         <div class="text-danger me-2 cursor-pointer btn-remove">
                                             <i class="fas fa-trash"></i>
@@ -164,7 +166,7 @@
                     
                                     <div class="col-md-12">
                                         <label class="upload-box w-100 text-center">
-                                            <i class="fas fa-cloud-upload-alt fa-2x text-purple"></i>
+                                            <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
                                             <span class="text-purple">Upload File</span>
                                             <small class="file-name text-muted text-truncate d-block mt-1">{{ $attachment['file_path'] }}</small>
                                             <input type="file" name="attachments[{{ $index }}][file]"
@@ -178,16 +180,9 @@
                             @endforeach
                         </div>
                     </div>
-                    <div class="form-group col-12 {{ $errors->first('description') ? ' has-error' : '' }}">
-                        <label for="description">Mô tả</label>
-                        <textarea name="description" class="form-control" placeholder="Mô tả" id="description" cols="30" rows="10">{{ $task->description }}</textarea>
-                        @if ($errors->first('description'))
-                            <span class="text-danger fs-7">{{ $errors->first('description') }}</span>
-                        @endif
-                    </div>
+
                     <div class="col-12 form-group">
                         <button class="btn btn-primary">Cập nhật</button>
-                        <a href="{{ route('tasks.index') }}" class="btn btn-outline-warning">Hủy</a>
                     </div>
                 </form>
             </div>
@@ -216,7 +211,7 @@
 
         function addAttachmentItem() {
             let newItem = document.createElement("div");
-            newItem.classList.add("col-4", "d-flex", "flex-column", "mb-2", "attachment-item", "py-2");
+            newItem.classList.add("row", "d-flex", "flex-column", "mb-2", "attachment-item", "py-2");
             newItem.setAttribute("data-index", index);
 
             newItem.innerHTML = `
@@ -233,7 +228,7 @@
         </div>
         <div class="col-md-12">
             <label class="upload-box w-100 text-center">
-                <i class="fas fa-cloud-upload-alt fa-2x text-purple"></i>
+                <i class="fas fa-cloud-upload-alt fa-2x mb-2 text-purple"></i><br>
                 <span class="text-purple">Upload File</span>
                 <small class="file-name text-muted text-truncate d-block mt-1"></small>
                 <input type="file" name="attachments[${index}][file]" class="form-control upload-input" hidden />

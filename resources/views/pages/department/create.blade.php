@@ -1,10 +1,10 @@
-@extends('layouts.master-layout', ['title' => 'Admin - Cập nhật chức vụ'])
+@extends('layouts.master-layout', ['title' => 'Admin - Tạo phòng ban'])
 
 @section('content')
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Cập nhật chức vụ</h3>
+            <h3 class="fw-bold mb-3">Thêm phòng ban</h3>
             <ul class="breadcrumbs mb-3">
             <li class="nav-home">
                 <a href="{{ route('dashboard') }}">
@@ -15,31 +15,30 @@
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="">Phân quyền</a>
+                <a href="">Quản lý phòng ban</a>
             </li>
             <li class="separator">
                 <i class="icon-arrow-right"></i>
             </li>
             <li class="nav-item">
-                <a href="#">Cập nhật chức vụ</a>
+                <a href="#">Tạo phòng ban</a>
             </li>
             </ul>
         </div>
         <div class="row">
-          <form class="row col-12" action="{{ route('positions.update', ['id' => $position->id]) }}" method="POST">
+          <form class="row col-12" action="{{ route('departments.store') }}" method="POST">
             @csrf
-            @method('PUT')
             <div class="col-12 row">
                 <div class="row mx-0">
                     <div class="form-group col-6 {{ $errors->first('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên chức vụ</label>
+                        <label for="name">Tên phòng ban</label>
                         <input
-                            value="{{ $position->name }}"
+                            value="{{ old('name') }}"
                             type="text"
                             class="form-control"
                             id="name"
                             name="name"
-                            placeholder="Tên chức vụ"
+                            placeholder="Tên phòng ban"
                         />
                         @if ($errors->first('name'))
                             <span class="text-danger fs-7">{{ $errors->first('name') }}</span>
@@ -48,7 +47,7 @@
                     <div class="form-group col-6 {{ $errors->first('description') ? ' has-error' : '' }}">
                         <label for="description">Mô tả</label>
                         <input
-                            value="{{ $position->description }}"
+                            value="{{ old('value') }}"
                             type="text"
                             class="form-control"
                             id="description"
@@ -60,7 +59,7 @@
                         @endif
                     </div>
                     <div class="col-6 form-group">
-                        <button class="btn btn-primary">Cập nhật chức vụ</button>
+                        <button class="btn btn-primary">Thêm phòng ban</button>
                     </div>
                 </div>
             </div>

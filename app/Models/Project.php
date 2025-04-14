@@ -13,7 +13,10 @@ class Project extends Model
         'status',
         'start_date',
         'end_date',
-        'created_by'
+        'created_by',
+        'type',
+        'creator_id',
+        'department_id',
     ];
 
     public function createdBy()

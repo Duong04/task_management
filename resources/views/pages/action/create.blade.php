@@ -1,4 +1,4 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Tạo hành động'])
 @section('content')
 <div class="container">
     <div class="page-inner">

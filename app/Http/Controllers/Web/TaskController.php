@@ -30,12 +30,44 @@ class TaskController extends Controller
 
     public function create()
     {
-        $users = $this->userService->getAllUser();
+        $users = $this->userService->all();
         $projects = $this->projectService->all();
         return view('pages.task.create', compact('users', 'projects'));
     }
 
     public function store(TaskRequest $request) {
         return $this->taskService->create($request);
+    }
+
+    public function show($id) {
+        $task = $this->taskService->findById($id);
+        $users = $this->userService->all();
+        $projects = $this->projectService->all();
+
+        if (!$task) {
+            abort(404);
+        }
+
+        return view('pages.task.show', compact('task', 'users', 'projects'));
+    }
+
+    public function edit($id) {
+        $task = $this->taskService->findById($id);
+        $users = $this->userService->all();
+        $projects = $this->projectService->all();
+
+        if (!$task) {
+            abort(404);
+        }
+
+        return view('pages.task.update', compact('task', 'users', 'projects'));
+    }
+
+    public function update(TaskRequest $request, $id) {
+        return $this->taskService->update($request, $id);
+    }
+
+    public function delete($id) {
+        return $this->taskService->delete($id);
     }
 }

@@ -1,4 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Dashboard'])
+
 @section('content')
     <div class="container">
         <div class="page-inner">

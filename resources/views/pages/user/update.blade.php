@@ -1,4 +1,5 @@
-@extends('layouts.master-layout')
+@extends('layouts.master-layout', ['title' => 'Admin - Cập nhật người dùng'])
+
 @section('content')
 <div class="container">
     <div class="page-inner">
