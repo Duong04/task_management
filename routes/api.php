@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Apis\V1\DiscussionController;
 use App\Http\Controllers\Apis\V1\UploadController;
 use App\Http\Controllers\Web\AuthController;
 use Illuminate\Http\Request;
@@ -12,3 +13,9 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/uploads/cloundinary', [UploadController::class, 'uploadCloundinary']);
+
+Route::controller(DiscussionController::class)->prefix('/v1/discussions')->group(function() {
+    Route::get('/{id}', 'getDiscussions');
+    Route::post('/', 'create');
+    Route::delete('/{id}', 'delete');
+});

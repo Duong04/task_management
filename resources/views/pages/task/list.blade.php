@@ -101,6 +101,7 @@
                                                         <div class="d-flex flex-column justify-content-center align-item-center ms-2">
                                                             <b>{{ $item->createdBy->name ?? 'N/A' }}</b>
                                                         </div>
+                                                        
                                                     </div>
                                                 </td>
                                                 <td>

@@ -12,9 +12,22 @@ class TaskService {
         $this->firebaseService = $firebaseService;
     }
 
-    public function all() {
+    public function all($type = null) {
         try {
-            return Task::orderByDesc('id')->get();
+            $tasks = Task::query();
+            $user = auth()->user();
+
+            if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
+                $tasks->where('assigned_to', $user->id);
+            }
+
+            if ($type) {
+                $tasks->where($type, $user->id);
+            }
+
+            $tasks = $tasks->orderByDesc('id')->get();
+
+            return $tasks;
         } catch (\Throwable $th) {
             toastr()->error($th->getMessage());
             return redirect()->back();
@@ -132,15 +145,22 @@ class TaskService {
 
     private function generateCode()
     {
-        $max_code = Task::max('task_code');
+        $year = date('Y');
 
-        if ($max_code && is_numeric($max_code)) {
-            $nextNumber = (int) $max_code + 1;
-            return str_pad($nextNumber, 9, '0', STR_PAD_LEFT);
+        $max_code = Task::where('task_code', 'like', "cv-$year-%")
+            ->orderByDesc('task_code')
+            ->value('task_code');
+
+        if ($max_code) {
+            $lastNumber = (int) substr($max_code, -3);
+            $nextNumber = $lastNumber + 1;
+        } else {
+            $nextNumber = 1;
         }
 
-        return '000000001';
+        return 'CV-' . $year . '-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
+
 
     
 }

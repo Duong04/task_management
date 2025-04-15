@@ -40,12 +40,14 @@ Route::middleware('auth')->prefix('admin')->group(function () {
         Route::get('/create', 'create')->name('projects.create');
         Route::post('/create', 'store')->name('projects.store');
         Route::get('/{id}', 'show')->name('projects.show');
+        Route::get('/{id}/edit', 'edit')->name('projects.edit');
         Route::put('/{id}', 'update')->name('projects.update');
         Route::delete('/{id}', 'delete')->name('projects.delete');
     });
 
     Route::controller(TaskController::class)->prefix('tasks')->group(function () {
         Route::get('/', 'index')->name('tasks.index');
+        Route::get('/created-by', 'list')->name('tasks.list');
         Route::get('/create', 'create')->name('tasks.create');
         Route::post('/create', 'store')->name('tasks.store');
         Route::get('/{id}/update', 'edit')->name('tasks.edit');

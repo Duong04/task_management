@@ -13,3 +13,16 @@ if (!function_exists('format_date')) {
         }
     }
 }
+
+
+if (!function_exists('format_datetime')) {
+    function format_datetime($dateTime, $format = 'd-m-Y H:i') {
+        if (empty($dateTime)) return null;
+
+        try {
+            return Carbon::parse($dateTime)->format($format);
+        } catch (\Exception $e) {
+            return $dateTime;
+        }
+    }
+}

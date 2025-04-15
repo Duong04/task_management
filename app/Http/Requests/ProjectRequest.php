@@ -26,12 +26,15 @@ class ProjectRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'start_date' => 'required|date',
+            'created_by' => 'required|exists:users,id',
+            'creator_id' => 'nullable|exists:users,id',
+            'department_id' => 'nullable|exists:departments,id',
             'end_date' => 'nullable|date|after_or_equal:start_date',
+            'attachments' => 'nullable|array',
+            'attachments.*.file' => 'nullable|max:10240',
+            'status' => 'required|in:not_started,in_progress,completed',
+            'type' => 'required|in:user,department'
         ];
-
-        if ($id) {
-            $rules['status'] = 'nullable|in:not_started,in_progress,completed';
-        }
 
         return $rules;
     }

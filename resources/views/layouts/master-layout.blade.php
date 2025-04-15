@@ -316,9 +316,17 @@
           $("#basic-datatables").DataTable({});
         });
     </script>
+    <script>
+      window.auth = {
+          isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
+          user: @json(Auth::user())
+      };
+  </script>
     <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>
     <script src="/assets/master/js/sweetalert.js"></script>
     <script src="/assets/master/js/main.js"></script>
+    <script src="/libraries/axios/axios.min.js"></script>
+    <script type="module" src="/js/axios.js"></script>
     @yield('script')
 </body>
 

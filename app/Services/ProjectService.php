@@ -1,10 +1,19 @@
 <?php
 namespace App\Services;
 
+use App\Models\Attachment;
 use App\Models\Project;
 use Auth;
+use App\Services\FirebaseService;
+
 
 class ProjectService {
+    private $firebaseService;
+
+    public function __construct(FirebaseService $firebaseService) {
+        $this->firebaseService = $firebaseService;
+    }
+
     public function all() {
         try {
             return Project::all();
@@ -17,9 +26,21 @@ class ProjectService {
     public function create($request) {
         try {
             $data = $request->validated();
-            $data['created_by'] = Auth::user()->id;
 
             $project = Project::create($data);
+
+            if ($request->has('attachments')) {
+                foreach ($request->attachments as $index => $attachment) {
+                    $file = $request->file("attachments.$index.file");
+
+                    if ($file && $file->isValid()) {
+                        $path = $this->firebaseService->uploadFile($file, 'tasks');
+                        $project->attachments()->create([
+                            'file_path' => $path,
+                        ]);
+                    }
+                }
+            }
 
             toastr()->success('Tạo dự án thành công!');
             return redirect()->back();
@@ -48,6 +69,34 @@ class ProjectService {
             }
 
             $project->update($data);
+
+            if ($request->has('attachments')) {
+                foreach ($request->attachments as $index => $attachment) {
+                    if (isset($attachment['id'])) {
+                        $existingAttachment = Attachment::find($attachment['id']);
+                        $file = $request->file("attachments.$index.file");
+
+                        if ($file && $file->isValid()) {
+                            $path = $this->firebaseService->uploadFile($file, 'tasks');
+                            
+                            $existingAttachment->update([
+                                'file_path' => $path,
+                            ]);
+                        }
+                    } else {
+                        $file = $request->file("attachments.$index.file");
+            
+                        if ($file && $file->isValid()) {
+                            $path = $this->firebaseService->uploadFile($file, 'tasks');
+                            
+                            $project->attachments()->create([
+                                'file_path' => $path,
+                                'description' => $attachment['description'] ?? null,
+                            ]);
+                        }
+                    }
+                }
+            }
 
             toastr()->success('Cập nhật dự án thành công!');
             return redirect()->route('projects.index');

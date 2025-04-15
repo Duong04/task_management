@@ -154,14 +154,6 @@
                                     @if ($attachment['id'])
                                     <input type="hidden" name="attachments[{{ $index }}][id]" value="{{ $attachment['id'] }}">  
                                     @endif
-                                    <div class="col-md-12 my-2">
-                                        <input type="text" name="attachments[{{ $index }}][description]" class="form-control"
-                                            value="{{ $attachment['description'] }}" placeholder="Mô tả tệp" />
-                                        @error("attachments.$index.description")
-                                            <span class="text-danger fs-7">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                    
                                     <div class="col-md-12">
                                         <label class="upload-box w-100 text-center">
                                             <i class="fas fa-cloud-upload-alt fa-2x text-purple"></i>

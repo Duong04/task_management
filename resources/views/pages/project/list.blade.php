@@ -15,7 +15,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Dự án cá nhân</a>
+                        <a href="#">Dự án của phòng ban</a>
                     </li>
                 </ul>
             </div>

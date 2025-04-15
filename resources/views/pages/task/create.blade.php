@@ -1,8 +1,5 @@
 @extends('layouts.master-layout', ['title' => 'Admin - Tạo công việc'])
 @section('css')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.3.1/ckeditor5.css" />
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5-premium-features/43.3.1/ckeditor5-premium-features.css" />
     <script type="importmap">
@@ -116,7 +113,7 @@
                         <label for="status">Trạng thái ( <span class="text-danger">*</span> )</label>
                         <select class="form-control" name="status" id="status">
                             <option value="">-- Trạng thái --</option>
-                            <option {{ old('status') == 'not_started' ? 'selected' : '' }} value="not_started">Chưa vắt đầu</option>
+                            <option {{ old('status') == 'not_started' ? 'selected' : '' }} value="not_started">Chưa bắt đầu</option>
                             <option {{ old('status') == 'in_progress' ? 'selected' : '' }} value="in_progress">Đang thực hiện</option>
                             <option {{ old('status') == 'completed' ? 'selected' : '' }} value="completed">Hoàn thành</option>
                         </select>

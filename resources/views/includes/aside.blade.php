@@ -44,27 +44,37 @@
                         <ul class="nav nav-collapse">
                             <li>
                                 <a href="{{ route('tasks.index') }}">
-                                    <span class="sub-item">Công việc</span>
+                                    <span class="sub-item">{{ strtoupper(auth()->user()->role) == 'SUPPER ADMIN' ? 'Công việc' : 'Việc của tôi' }}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('subtasks.index') }}">
-                                    <span class="sub-item">Nhiệm vụ con</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="components/gridsystem.html">
-                                    <span class="sub-item">Người giao việc</span>
+                                <a href="{{ route('tasks.list') }}">
+                                    <span class="sub-item">Việc tôi giao</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('projects.index') }}">
-                        <i class="fas fa-table"></i>
+                    <a data-bs-toggle="collapse" href="#projects">
+                        <i class="fas fa-th-list"></i>
                         <p>Quản lý dự án</p>
+                        <span class="caret"></span>
                     </a>
+                    <div class="collapse" id="projects">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('projects.index') }}">
+                                    <span class="sub-item">Dự án cá nhân</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('positions.index') }}">
+                                    <span class="sub-item">Dự án của phòng ban</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}">

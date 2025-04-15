@@ -25,6 +25,11 @@ class Task extends Model
         return $this->morphMany(Attachment::class, 'attachable');
     }
 
+    public function discussions()
+    {
+        return $this->morphMany(Discussion::class, 'discussionable');
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class, 'project_id');

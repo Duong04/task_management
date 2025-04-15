@@ -28,6 +28,12 @@ class TaskController extends Controller
         return view('pages.task.index', compact('tasks'));
     }
 
+    public function list()
+    {
+        $tasks = $this->taskService->all('created_by');
+        return view('pages.task.list', compact('tasks'));
+    }
+
     public function create()
     {
         $users = $this->userService->all();

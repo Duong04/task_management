@@ -29,7 +29,7 @@ const editorConfig = {
         ],
         shouldNotGroupWhenFull: false
     },
-    placeholder: 'Mô tả công việc!',
+    placeholder: 'Mô tả !',
     plugins: [
         AccessibilityHelp, Autosave, Bold, Essentials, Italic, Mention, Paragraph, SelectAll,
         Undo, Typing, Image, ImageToolbar, ImageUpload, ImageResize, ImageStyle, SimpleUploadAdapter, FontFamily, FontSize, Alignment
