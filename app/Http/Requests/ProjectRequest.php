@@ -24,7 +24,7 @@ class ProjectRequest extends FormRequest
         $id = $this->id;
         $rules = [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:1000',
+            'description' => 'nullable|string',
             'start_date' => 'required|date',
             'created_by' => 'required|exists:users,id',
             'creator_id' => 'nullable|exists:users,id',
@@ -35,6 +35,15 @@ class ProjectRequest extends FormRequest
             'status' => 'required|in:not_started,in_progress,completed',
             'type' => 'required|in:user,department'
         ];
+
+        if ($id) {
+            $rules['name'] = 'nullable|max:255';
+            $rules['description'] = 'nullable|string';
+            $rules['start_date'] = 'nullable|date';
+            $rules['created_by'] = 'nullable|exists:users,id';
+            $rules['type'] = 'nullable|in:user,department';
+            $rules['status'] = 'nullable|in:not_started,in_progress,completed';
+        }
 
         return $rules;
     }

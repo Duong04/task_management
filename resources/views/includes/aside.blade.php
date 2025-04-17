@@ -69,7 +69,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('positions.index') }}">
+                                <a href="{{ route('projects.list') }}">
                                     <span class="sub-item">Dự án của phòng ban</span>
                                 </a>
                             </li>

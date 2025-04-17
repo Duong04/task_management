@@ -46,4 +46,17 @@ class Project extends Model
     public function department() {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+    public function getProgressAttribute()
+    {
+        $totalTasks = $this->tasks()->count();
+
+        if ($totalTasks === 0) {
+            return 0;
+        }
+
+        $totalProgress = $this->tasks()->sum('progress');
+
+        return round($totalProgress / $totalTasks, 2); 
+    }
 }

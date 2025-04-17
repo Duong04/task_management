@@ -88,6 +88,24 @@
     </style>
 @endsection
 @section('script')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButton = document.getElementById('editTaskBtn');
+        if (editButton) {
+            editButton.addEventListener('click', function () {
+                toggleEdit(true);
+            });
+        }
+
+        window.toggleEdit = function (enable) {
+            document.getElementById('status-view').classList.toggle('d-none', enable);
+            document.getElementById('status-edit').classList.toggle('d-none', !enable);
+            document.getElementById('progress-view').classList.toggle('d-none', enable);
+            document.getElementById('progress-edit').classList.toggle('d-none', !enable);
+            document.getElementById('edit-buttons').classList.toggle('d-none', !enable);
+        };
+    });
+</script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 <script type="module" src="/js/comment.js"></script>
 @endsection
@@ -149,7 +167,7 @@
                     </div>
                     <div class="col-8 d-flex justify-content-end align-items-start mb-3" style="gap: 10px;">
                         <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-outline-primary">✏️ Chỉnh sửa</a>
-                        <form action="{{ route('tasks.delete', $task->id) }}" method="POST" class="d-inline"
+                        <form action="{{ route('tasks.delete', $task->id) }}" id="delete-form-{{ $task->id }}" method="POST" class="d-inline"
                             id="delete-form-{{ $task->id }}">
                             @csrf
                             @method('DELETE')
@@ -233,20 +251,52 @@
                     </div>
                     <div class="col-md-4">
                         <div class="border rounded p-4 bg-white shadow-sm">
-                            <h6 class="mb-3">Tiến độ công việc</h6>
-                            <div class="mb-2"><strong>Trạng thái:</strong>
-                                <span class="badge bg-info text-dark">{{ $status[$task->status] }}</span>
-                            </div>
-                            <div class="mb-2"><strong>Tiến độ hiện tại:</strong></div>
-                            <div class="progress" style="height: 12px;">
-                                <div class="progress-bar bg-warning" role="progressbar"
-                                    style="width: {{ $task->progress }}%;" aria-valuenow="{{ $task->progress }}"
-                                    aria-valuemin="0" aria-valuemax="100">
+                            <h6 class="mb-3 d-flex justify-content-between align-items-center">
+                                Tiến độ công việc
+                                <button id="editTaskBtn" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Sửa"><i class="fa fa-edit"></i></button>
+                            </h6>
+                    
+                            <form id="updateTaskForm" action="{{ route('tasks.update', ['id' => $task->id, 'redirect' => 'back']) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                    
+                                <div class="mb-2"><strong>Trạng thái:</strong>
+                                    <span id="status-view" class="badge bg-info text-dark">{{ $status[$task->status] }}</span>
+                    
+                                    <select name="status" id="status-edit" class="form-select form-select-sm d-none mt-2">
+                                        @foreach ($status as $key => $label)
+                                            <option value="{{ $key }}" @selected($key == $task->status)>
+                                                {{ $label }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </div>
-                            <div class="text-end mt-1 small">{{ $task->progress }}%</div>
+                    
+                                {{-- Tiến độ --}}
+                                <div class="mb-2"><strong>Tiến độ hiện tại:</strong></div>
+                                <div id="progress-view" class="progress" style="height: 12px;">
+                                    <div class="progress-bar bg-info" role="progressbar"
+                                        style="width: {{ $task->progress }}%;" aria-valuenow="{{ $task->progress }}"
+                                        aria-valuemin="0" aria-valuemax="100"></div>
+                                        
+                                    </div>
+                                    <div class="text-end mt-1 small">{{ $task->progress }}%</div>
+                    
+                                <div id="progress-edit" class="d-none">
+                                    <input type="range" name="progress" class="form-range mt-2" min="0" max="100" value="{{ $task->progress }}"
+                                        oninput="document.getElementById('progress-value').innerText = this.value + '%'">
+                                    <div class="text-end small"><span id="progress-value">{{ $task->progress }}%</span></div>
+                                </div>
+                    
+                                {{-- Nút hành động --}}
+                                <div id="edit-buttons" class="d-none mt-3 text-end">
+                                    <button type="button" class="btn btn-sm btn-secondary me-2" onclick="toggleEdit(false)">Hủy</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Lưu</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>

@@ -14,9 +14,27 @@ class ProjectService {
         $this->firebaseService = $firebaseService;
     }
 
-    public function all() {
+    public function all($type = null) {
         try {
-            return Project::all();
+            $projects = Project::query();
+            $user = auth()->user();
+
+            if ($type) {
+                $projects->where('type', $type);
+            }
+
+            if ($type == 'user') {
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
+                    $projects->where('creator_id', $user->id)
+                        ->orWhere('created_by', $user->id);
+                }
+            }else if ($type == 'department') {
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
+                    $projects->where('department_id', $user->department_id);
+                }
+            }
+
+            return $projects->get();
         } catch (\Throwable $th) {
             toastr()->error($th->getMessage());
             return redirect()->back();
@@ -61,6 +79,7 @@ class ProjectService {
     public function update($request, $id) {
         try {
             $data = $request->validated();
+            $redirect = $request->query('redirect');
 
             $project = Project::find($id);
             if (!$project) {
@@ -99,6 +118,10 @@ class ProjectService {
             }
 
             toastr()->success('Cập nhật dự án thành công!');
+
+            if ($redirect && $redirect == 'back') {
+                return redirect()->back();
+            }
             return redirect()->route('projects.index');
         } catch (\Throwable $th) {
             toastr()->error($th->getMessage());

@@ -15,7 +15,7 @@
                         <i class="icon-arrow-right"></i>
                     </li>
                     <li class="nav-item">
-                        <a href="#">Dự án cá nhân</a>
+                        <a href="#">Dự án {{ $type == 'user' ? 'cá nhân' : 'phòng ban' }}</a>
                     </li>
                 </ul>
             </div>
@@ -40,6 +40,7 @@
                                             <th>Tên dự án</th>
                                             <th>Trạng thái</th>
                                             <th>Người tạo</th>
+                                            <th>{{ $type == 'user' ? 'Người thực hiện' : 'Phòng ban' }}</th>
                                             <th>Ngày bắt đầu</th>
                                             <th>Ngày kết thúc</th>
                                             <th>Hành động</th>
@@ -72,6 +73,20 @@
                                                             <b>{{ $item->createdBy->name ?? 'N/A' }}</b>
                                                         </div>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    @if ($type == 'user')
+                                                        <div class="d-flex align-items-center" style="width: 250px">
+                                                            <div class="d-block avatar avatar-sm" style="width: 50px;"><img class="rounded-circle object-fit-cover" src="{{ $item->creator->avatar }}" width="45px" height="45px" alt=""></div>
+                                                            <div class="d-flex flex-column justify-content-center align-item-center ms-2">
+                                                                <b>{{ $item->creator->name ?? 'N/A' }}</b>
+                                                            </div>
+                                                        </div>
+                                                    @else
+                                                    <div class="d-flex align-items-center" style="width: 250px">
+                                                        {{ $item->department->name }}
+                                                    </div>
+                                                    @endif
                                                 </td>
                                                 <td><div style="min-width: 120px;">{{ format_date($item->start_date) ?? 'N/A' }}</div></td>
                                                 <td><div style="min-width: 120px;">{{ format_date($item->end_date) ?? 'N/A' }}</div></td>

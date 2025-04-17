@@ -92,6 +92,24 @@
 @section('script')
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script type="module" src="/js/comment.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const editBtn = document.getElementById('edit-project-btn');
+        const viewDiv = document.getElementById('project-view');
+        const formDiv = document.getElementById('project-edit-form');
+        const cancelBtn = document.getElementById('cancel-edit-project');
+
+        editBtn.addEventListener('click', () => {
+            viewDiv.classList.add('d-none');
+            formDiv.classList.remove('d-none');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            formDiv.classList.add('d-none');
+            viewDiv.classList.remove('d-none');
+        });
+    });
+    </script>
 @endsection
 
 @section('content')
@@ -142,10 +160,10 @@
                             <div class="col-md-6 text-end">
                                 <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-outline-primary">✏️
                                     Chỉnh sửa</a>
-                                <form action="{{ route('projects.delete', $project->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('projects.delete', $project->id) }}" id="delete-form-{{ $project->id }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger">🗑️ Xóa</button>
+                                    <button class="btn btn-danger delete">🗑️ Xóa</button>
                                 </form>
                             </div>
                         </div>
@@ -183,15 +201,42 @@
                             <div class="border rounded p-3 mb-3">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div><strong>{{ $task->name }}</strong></div>
-                                    <span
-                                        class="badge {{ $status_color[$task->status] }}">{{ $status[$task->status] }}</span>
-                                </div>
-                                <div class="d-flex justify-content-between small">
-                                    <div>Người thực hiện: {{ $task->assignedTo->name ?? 'N/A' }}</div>
-                                    <div>Ưu tiên: <span
-                                            class="badge-custom {{ $priority_color[$task->priority] }}">{{ $priorities[$task->priority] }}</span>
+
+                                    <div class="d-flex align-items-center gap-2">
+                                        <a data-bs-toggle="tooltip"
+                                        title="Xem chi tiết" href="{{ route('tasks.show', $task->id) }}" class="text-primary" title="Xem">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        <a data-bs-toggle="tooltip"
+                                        title="sửa" href="{{ route('tasks.edit', $task->id) }}" class="text-success" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+
+                                        <form action="{{ route('tasks.delete', $task->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa công việc này không?')" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button data-bs-toggle="tooltip"
+                                            title="Xóa" type="submit" class="btn btn-link p-0 m-0 text-danger delete" title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+
+                                        <span class="badge {{ $status_color[$task->status] }} ms-2">
+                                            {{ $status[$task->status] }}
+                                        </span>
                                     </div>
                                 </div>
+
+                                <div class="d-flex justify-content-between small">
+                                    <div>Người thực hiện: {{ $task->assignedTo->name ?? 'N/A' }}</div>
+                                    <div>Ưu tiên: 
+                                        <span class="badge-custom {{ $priority_color[$task->priority] }}">
+                                            {{ $priorities[$task->priority] }}
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <div class="progress mt-2" style="height: 10px;">
                                     <div class="progress-bar bg-warning" style="width: {{ $task->progress }}%;"></div>
                                 </div>
@@ -200,6 +245,7 @@
                         @empty
                             <p class="text-muted">Chưa có công việc nào.</p>
                         @endforelse
+
                     </div>
 
                     {{-- Bình luận --}}
@@ -221,19 +267,49 @@
                 {{-- Sidebar tiến độ dự án --}}
                 <div class="col-md-4">
                     <div class="border rounded p-4 bg-white shadow-sm">
-                        <h6 class="mb-3">Tiến độ dự án</h6>
-                        <div class="mb-2"><strong>Trạng thái:</strong>
-                            <span class="badge bg-info text-dark">{{ $status[$task->status] }}</span>
-                        </div>
-                        <div class="mb-2"><strong>Tiến độ trung bình:</strong></div>
-                        <div class="progress" style="height: 12px;">
-                            <div class="progress-bar bg-success" role="progressbar"
-                                style="width: {{ $project->average_progress }}%;"
-                                aria-valuenow="{{ $project->average_progress }}" aria-valuemin="0" aria-valuemax="100">
+                        <h6 class="mb-3 d-flex justify-content-between align-items-center">
+                            Tiến độ dự án
+                            <button class="btn btn-sm btn-outline-warning" id="edit-project-btn"data-bs-toggle="tooltip" title="Sửa"><i class="fa fa-edit"></i></button>
+                        </h6>
+                    
+                        {{-- Hiển thị --}}
+                        <div id="project-view">
+                            <div class="mb-2"><strong>Trạng thái:</strong>
+                                <span class="badge bg-info text-dark">{{ $status[$project->status] }}</span>
                             </div>
+                            <div class="mb-2"><strong>Tiến độ trung bình:</strong></div>
+                            <div class="progress" style="height: 12px;">
+                                <div class="progress-bar bg-success" role="progressbar"
+                                    style="width: {{ $project->progress }}%;" aria-valuenow="{{ $project->progress }}"
+                                    aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                            <div class="text-end mt-1 small">{{ $project->progress }}%</div>
                         </div>
-                        <div class="text-end mt-1 small">{{ $project->average_progress }}%</div>
+                    
+                        <form id="project-edit-form" class="d-none mt-3"
+                            action="{{ route('projects.update', ['id' => $project->id, 'redirect' => 'back']) }}"
+                            method="POST">
+                            @csrf
+                            @method('PUT')
+                    
+                            <div class="mb-2"><strong>Trạng thái:</strong>
+                                <select name="status" class="form-select form-select-sm mt-2">
+                                    @foreach ($status as $key => $label)
+                                        <option value="{{ $key }}" @selected($key == $project->status)>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                    
+                            <div class="text-end">
+                                <button type="button" class="btn btn-sm btn-secondary me-2" id="cancel-edit-project">Hủy</button>
+                                <button type="submit" class="btn btn-sm btn-success">Lưu</button>
+                            </div>
+                        </form>
                     </div>
+                    
                     @if ($project->attachments->count())
                         <div class="col-12 mt-3">
                             <strong>Tệp đính kèm:</strong>

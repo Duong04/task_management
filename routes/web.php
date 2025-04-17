@@ -37,6 +37,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::controller(ProjectController::class)->prefix('projects')->group(function () {
         Route::get('/', 'index')->name('projects.index');
+        Route::get('/department', 'list')->name('projects.list');
         Route::get('/create', 'create')->name('projects.create');
         Route::post('/create', 'store')->name('projects.store');
         Route::get('/{id}', 'show')->name('projects.show');

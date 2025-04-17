@@ -29,6 +29,7 @@ class UserRequest extends FormRequest
             'password' => 'required|string|min:8|max:255',
             'is_active' => 'required',
             'role_id' => 'required|exists:roles,id',
+            'department_id' => 'nullable|exists:departments,id',
             'user_detail.position_id' => 'nullable|exists:positions,id',
             'user_detail.phone' => 'nullable|string|max:11|min:9',
             'user_detail.address' => 'nullable|string|max:250',

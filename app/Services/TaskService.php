@@ -65,7 +65,7 @@ class TaskService {
                 }
             }
 
-            toastr()->success('Task created successfully!');
+            toastr()->success('Tạo công việc thành công!');
             return redirect()->back();
         } catch (\Throwable $th) {
             toastr()->error($th->getMessage());
@@ -77,6 +77,7 @@ class TaskService {
     {
         try {
             $data = $request->validated();
+            $redirect = $request->query('redirect');
 
             $task = Task::find($id);
 
@@ -114,7 +115,11 @@ class TaskService {
                     }
                 }
             }
-            toastr()->success('Task created successfully!');
+            toastr()->success('Cập nhật công việc thành công!');
+
+            if ($redirect && $redirect == 'back') {
+                return redirect()->back();
+            }
             return redirect()->route('tasks.index');
         } catch (\Throwable $th) {
             toastr()->error($th->getMessage());

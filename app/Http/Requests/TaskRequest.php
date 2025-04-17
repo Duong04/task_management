@@ -36,6 +36,15 @@ class TaskRequest extends FormRequest
         ];
 
         if ($id) {
+            $rules['name'] = 'nullable|string|max:255';
+            $rules['status'] = 'nullable|in:not_started,in_progress,completed';
+            $rules['description'] = 'nullable|string';
+            $rules['priority'] = 'nullable|in:low,medium,high';
+            $rules['progress'] = 'nullable|integer';
+            $rules['assigned_to'] = 'nullable|exists:users,id';
+            $rules['created_by'] = 'nullable|exists:users,id';
+            $rules['project_id'] = 'nullable|exists:projects,id';
+            $rules['due_date'] = 'nullable|date';
             $rules['attachments.*.id'] = 'nullable';
         }
 

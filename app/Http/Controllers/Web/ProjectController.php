@@ -26,8 +26,16 @@ class ProjectController extends Controller
 
     public function index()
     {
-        $projects = $this->projectService->all();
-        return view('pages.project.index', compact('projects'));
+        $type = 'user';
+        $projects = $this->projectService->all($type);
+        return view('pages.project.index', compact('projects', 'type'));
+    }
+
+    public function list()
+    {
+        $type = 'department';
+        $projects = $this->projectService->all('department');
+        return view('pages.project.index', compact('projects', 'type'));
     }
 
     public function create()

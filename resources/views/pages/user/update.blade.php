@@ -97,6 +97,18 @@
                             <span class="text-danger fs-7">{{ $errors->first('user_detail.position_id') }}</span>
                         @endif
                     </div>
+                    <div class="form-group col-4 {{ $errors->first('department_id') ? ' has-error' : '' }}">
+                        <label for="department_id">Phòng ban</label>
+                        <select name="department_id" id="department_id" class="form-control">
+                            <option value="">Chọn phòng ban</option>
+                            @foreach ($departments as $department)
+                                <option {{ $user->department_id == $department->id ? 'selected' : '' }} value="{{ $department->id }}">{{ $department->name }}</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->first('department_id'))
+                            <span class="text-danger fs-7">{{ $errors->first('department_id') }}</span>
+                        @endif
+                    </div>
                     <div class="form-group col-4 {{ $errors->first('is_active') ? ' has-error' : '' }}">
                         <label for="status">Trạng thái</label>
                         <select name="is_active" id="status" class="form-control">
