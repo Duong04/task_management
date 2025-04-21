@@ -39,18 +39,27 @@
 @section('content')
     <div class="container">
         <div class="page-inner">
-            <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div class="d-flex align-items-left justify-content-between align-items-md-center flex-column flex-md-row pt-2 pb-4">
                 <div>
                     <h3 class="fw-bold mb-3">Báo cáo</h3>
                     <h6 class="op-7 mb-2">Xin chào {{ auth()->user()->name }}, chúc bạn một ngày làm việc năng động!</h6>
                 </div>
-                <div class="ms-md-auto py-2 py-md-0">
-                    <a href="#" class="btn btn-label-info btn-round me-2">Manage</a>
-                    <a href="#" class="btn btn-primary btn-round">Add Customer</a>
+                <div class="card-tools">
+                    <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
+                        <span class="btn-label">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        Export
+                    </a>
+                    <a href="#" class="btn btn-label-info btn-round btn-sm">
+                        <span class="btn-label">
+                            <i class="fa fa-print"></i>
+                        </span>
+                        Print
+                    </a>
                 </div>
             </div>
             <div>
-                <h4>Báo cáo công việc</h4>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <div class="card card-stats card-round" style="height: 110px;">
@@ -136,20 +145,6 @@
                         <div class="card-header">
                             <div class="card-head-row">
                                 <div class="card-title">Báo cáo số lượng công việc</div>
-                                <div class="card-tools">
-                                    <a href="#" class="btn btn-label-success btn-round btn-sm me-2">
-                                        <span class="btn-label">
-                                            <i class="fa fa-pencil"></i>
-                                        </span>
-                                        Export
-                                    </a>
-                                    <a href="#" class="btn btn-label-info btn-round btn-sm">
-                                        <span class="btn-label">
-                                            <i class="fa fa-print"></i>
-                                        </span>
-                                        Print
-                                    </a>
-                                </div>
                             </div>
                         </div>
                         <div class="card" style="box-shadow: none;">
@@ -337,8 +332,13 @@
 @endsection
 @section('script')
     <script>
+        const isAuthenticated = window.auth.isAuthenticated;
+        const currentUser = window.auth.user;
+        const role = isAuthenticated ? currentUser.role.name : null;
+        const user_id = isAuthenticated ? currentUser.id : null;
+
         function renderChart(year, month = null) {
-            let url = `/api/v1/tasks/stats-time?year=${year}`;
+            let url = `/api/v1/tasks/stats-time?year=${year}&role=${role}&user_id=${user_id}`;
             if (month) url += `&month=${month}`;
 
             fetch(url)

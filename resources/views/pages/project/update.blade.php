@@ -32,20 +32,6 @@
                             <span class="text-danger fs-7">{{ $errors->first('status') }}</span>
                         @endif
                     </div>
-                    <div id="creator-group"
-                        class="form-group col-4 {{ $errors->first('manager_id') ? ' has-error' : '' }}">
-                        <label for="manager_id">Người quản trị ( <span class="text-danger">*</span> )</label>
-                        <select class="form-control" name="manager_id" id="manager_id">
-                            @foreach ($users as $item)
-                                <option
-                                    {{ $project->manager_id == $item->id ? 'selected' : '' }}
-                                    value="{{ $item->id }}">{{ $item->name }} ({{ $item->role->name }})</option>
-                            @endforeach
-                        </select>
-                        @if ($errors->first('manager_id'))
-                            <span class="text-danger fs-7">{{ $errors->first('manager_id') }}</span>
-                        @endif
-                    </div>
                     <div class="form-group col-4 {{ $errors->first('type') ? ' has-error' : '' }}">
                         <label for="type">Phân loại ( <span class="text-danger">*</span> )</label>
                         <select class="form-control" name="type" id="type">
@@ -71,6 +57,20 @@
                             <span class="text-danger fs-7">{{ $errors->first('department_id') }}</span>
                         @endif
                     </div>
+                    <div id="creator-group"
+                        class="form-group col-4 {{ $errors->first('manager_id') ? ' has-error' : '' }}">
+                        <label for="manager_id">Người quản trị ( <span class="text-danger">*</span> )</label>
+                        <select class="form-control" name="manager_id" id="manager_id">
+                            @foreach ($users as $item)
+                                <option
+                                    {{ $project->manager_id == $item->id ? 'selected' : '' }}
+                                    value="{{ $item->id }}">{{ $item->name }} ({{ $item->role->name }})</option>
+                            @endforeach
+                        </select>
+                        @if ($errors->first('manager_id'))
+                            <span class="text-danger fs-7">{{ $errors->first('manager_id') }}</span>
+                        @endif
+                    </div>
                     <div class="form-group col-4 {{ $errors->first('start_date') ? ' has-error' : '' }}">
                         <label for="start_date">Ngày bắt đầu</label>
                         <input value="{{ $project->start_date }}" type="date" class="form-control" id="start_date"
@@ -80,7 +80,7 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('end_date') ? ' has-error' : '' }}">
-                        <label for="end_date">Ngày kết thúc</label>
+                        <label for="end_date">Ngày kết thúc ( <span class="text-danger">*</span> )</label>
                         <input value="{{ $project->end_date }}" type="date" class="form-control" id="end_date"
                             name="end_date" placeholder="Mô tả dự án" />
                         @if ($errors->first('end_date'))

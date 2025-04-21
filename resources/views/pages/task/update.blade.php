@@ -201,9 +201,6 @@
                 <i class="fas fa-plus"></i>
             </div>
         </div>
-        <div class="col-md-12 my-2">
-            <input type="text" name="attachments[${index}][description]" class="form-control" placeholder="Mô tả tệp" />
-        </div>
         <div class="col-md-12">
             <label class="upload-box w-100 text-center">
                 <i class="fas fa-cloud-upload-alt fa-2x text-purple"></i>

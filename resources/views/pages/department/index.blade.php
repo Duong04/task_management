@@ -59,7 +59,7 @@
                                     <div class="col-4 p-2">
                                         <div class="p-4 m-h-170 bg-white rounded-3 shadow d-flex justify-content-between">
                                             <div class="d-flex flex-column justify-content-between">
-                                                <h6>Total {{ $item->users_count }} users</h6>
+                                                <h6>Tổng {{ $item->users_count }} người</h6>
                                                 <div class="pt-3">
                                                     <h5>{{ $item->name }}</h5>
                                                     <div class="d-flex">

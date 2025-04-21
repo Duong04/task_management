@@ -171,9 +171,15 @@
                                     <span
                                         class="badge-custom {{ $project->type == 'user' ? 'badge-blue' : 'badge-purple' }}">{{ $project->type == 'user' ? 'Cá nhân' : 'Phòng ban' }}</span>
                                 </div>
+                                @if ($project->type == 'department')
                                 <div class="col-md-6 mb-4">
-                                    <span>{{ $project->type == 'user' ? 'Người quản trị' : 'Phòng ban' }}</span> <br>
-                                    <strong>{{ $project->type == 'user' ? $project->creator?->name : $project->department?->name }}</strong>
+                                    <span>Phòng ban</span> <br>
+                                    <strong>{{ $project->department?->name }}</strong>
+                                </div>
+                                @endif
+                                <div class="col-md-6 mb-4">
+                                    <span>Người quản trị</span> <br>
+                                    <strong>{{ $project->manager?->name }}</strong>
                                 </div>
                                 <div class="col-md-6 mb-4"><span>Ngày bắt đầu:</span><br>
                                     <strong>{{ format_date($project->start_date) }}</strong>

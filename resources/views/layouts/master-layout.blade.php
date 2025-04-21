@@ -314,13 +314,26 @@
         });
 
         $(document).ready(function () {
-          $("#basic-datatables").DataTable({});
+          $("#basic-datatables").DataTable({language: {
+            search: "Tìm kiếm:",
+            lengthMenu: "Hiển thị _MENU_ mục",
+            info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            infoEmpty: "Không có dữ liệu",
+            zeroRecords: "Không tìm thấy kết quả phù hợp",
+            infoFiltered: "(lọc từ tổng số _MAX_ mục)",
+            paginate: {
+                first: "Đầu",
+                last: "Cuối",
+                next: "Sau",
+                previous: "Trước"
+            }
+        }});
         });
     </script>
     <script>
       window.auth = {
           isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
-          user: @json(Auth::user())
+          user: @json(Auth::user()->load('role'))
       };
   </script>
     <script src="/assets/master/js/plugin/sweetalert/sweetalert.min.js"></script>

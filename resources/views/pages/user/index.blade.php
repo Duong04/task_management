@@ -28,7 +28,7 @@
                                 @can('general-check', ['User Management', 'create'])
                                 <a href="{{ route('users.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
-                                    Tạo người dùng
+                                    Thêm mới
                                 </a>
                                                 @endcan
                             </div>

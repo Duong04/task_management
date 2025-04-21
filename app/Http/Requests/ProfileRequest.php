@@ -24,6 +24,7 @@ class ProfileRequest extends FormRequest
         $id = auth()->user()->id;
         $rules = [
             'name' => 'nullable|string|max:50',
+            'password' => 'nullable|string|max:50|min:8',
             'email' => 'nullable|email|unique:users,email,'.$id,
             'userDetail.address' => 'nullable|string|max:255',
             'userDetail.phone' => 'nullable|string|max:11|min:9',

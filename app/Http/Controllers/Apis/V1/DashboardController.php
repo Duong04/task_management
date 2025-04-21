@@ -16,14 +16,20 @@ class DashboardController extends Controller
             $year = $request->input('year');
             $month = $request->input('month');
             $user = $request->input('user');
+            $user_id = $request->input('user_id');
+            $role = $request->input('role');
 
             if ($month && $year) {
                 $query = Task::selectRaw('DAY(created_at) as day, COUNT(*) as total')
                     ->whereYear('created_at', $year)
                     ->whereMonth('created_at', $month);
 
+                if (strtoupper($role) !== 'SUPPER ADMIN') {
+                    $query->where('assigned_to',  $user_id);
+                }
+
                 if ($user) {
-                    $query->where('assigned_to', $user);
+                    $query->where('assigned_to',  $user);
                 }
 
                 $tasks = $query->groupBy(DB::raw('DAY(created_at)'))
@@ -45,6 +51,10 @@ class DashboardController extends Controller
             elseif ($year) {
                 $query = Task::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
                     ->whereYear('created_at', $year);
+
+                if (strtoupper($role) !== 'SUPPER ADMIN') {
+                    $query->where('assigned_to', $user_id);
+                }
 
                 if ($user) {
                     $query->where('assigned_to', $user);

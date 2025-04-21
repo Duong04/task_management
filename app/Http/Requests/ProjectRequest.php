@@ -28,7 +28,7 @@ class ProjectRequest extends FormRequest
             'start_date' => 'required|date',
             'manager_id' => 'required|exists:users,id',
             'department_id' => 'nullable|exists:departments,id',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|in:not_started,in_progress,completed',
             'type' => 'required|in:user,department'
         ];
@@ -37,6 +37,7 @@ class ProjectRequest extends FormRequest
             $rules['name'] = 'nullable|max:255';
             $rules['description'] = 'nullable|string';
             $rules['start_date'] = 'nullable|date';
+            $rules['end_date'] = 'nullable|date';
             $rules['manager_id'] = 'nullable|exists:users,id';
             $rules['type'] = 'nullable|in:user,department';
             $rules['status'] = 'nullable|in:not_started,in_progress,completed';

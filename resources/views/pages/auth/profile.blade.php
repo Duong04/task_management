@@ -171,6 +171,13 @@
                             <span class="text-danger" style="font-size: 0.8rem;">{{ $errors->first('email') }}</span>
                           @endif
                         </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="password">Mật khẩu</label>
+                            <input value="" name="password" type="password" class="form-control" id="password" placeholder="Mật khẩu" />
+                            @if ($errors->first('password'))
+                              <span class="text-danger" style="font-size: 0.8rem;">{{ $errors->first('password') }}</span>
+                            @endif
+                          </div>
                       
                         <div class="col-md-6 mb-3">
                           <label class="form-label" for="phone">Số điện thoại</label>
@@ -200,7 +207,7 @@
                         </div>
                       
                         {{-- Địa chỉ --}}
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                           <label class="form-label" for="address">Địa chỉ</label>
                           <input name="userDetail[address]" rows="4" type="text" class="form-control" id="address" placeholder="Địa chỉ" type="text" value="{{ auth()->user()?->userDetail?->address }}">
                           @if ($errors->first('userDetail.address'))

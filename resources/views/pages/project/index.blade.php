@@ -2,7 +2,22 @@
 @section('script')
     <script>
         $(document).ready(function () {
-          var table = $('#basic-datatables-filter').DataTable();
+          var table = $('#basic-datatables-filter').DataTable({
+            language: {
+            search: "Tìm kiếm:",
+            lengthMenu: "Hiển thị _MENU_ mục",
+            info: "Hiển thị _START_ đến _END_ của _TOTAL_ mục",
+            infoEmpty: "Không có dữ liệu",
+            zeroRecords: "Không tìm thấy kết quả phù hợp",
+            infoFiltered: "(lọc từ tổng số _MAX_ mục)",
+            paginate: {
+                first: "Đầu",
+                last: "Cuối",
+                next: "Sau",
+                previous: "Trước"
+            }
+        }
+          });
 
           $('#statusFilter').on('change', function () {
               var selected = $(this).val();
@@ -41,7 +56,7 @@
                                 @can('general-check', ['Project Management', 'create'])
                                     <a href="{{ route('projects.create') }}" class="btn btn-primary btn-round ms-auto">
                                         <i class="fa fa-plus"></i>
-                                        Thêm dự án
+                                        Thêm mới
                                     </a>
                                 @endcan
                             </div>
