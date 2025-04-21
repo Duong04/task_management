@@ -14,7 +14,7 @@ class TaskService {
         $this->firebaseService = $firebaseService;
     }
 
-    public function all($type = null) {
+    public function all($type = null, $all = false) {
         try {
             $tasks = Task::query();
             $user = auth()->user();
@@ -22,15 +22,15 @@ class TaskService {
             $hasViewAllOrder = collect($role['permissions'])
             ->firstWhere('name', 'Task Management')['actions'] ?? [];
 
-
-            if ($type) {
-                $tasks->where($type, $user->id)
-                ->where('assigned_to', '!=', $user->id);
-            }else {
-                if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
+            if (!$all) {
+                if ($type) {
+                    $tasks->where($type, $user->id)
+                    ->where('assigned_to', '!=', $user->id);
+                }else {
                     $tasks->where('assigned_to', $user->id);
                 }
             }
+
 
             $tasks = $tasks->orderByDesc('id')->get();
 

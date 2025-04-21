@@ -43,9 +43,19 @@
                     </a>
                     <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
+                            @php
+                                $canViewTask = auth()->user()->can('general-check', ['Task Management', 'viewAny']);
+                            @endphp
+                            @if (strtoupper(auth()->user()->role) == 'SUPPER ADMIN' || $canViewTask)
+                            <li class="{{ request()->routeIs('tasks.all') ? 'active' : ''}}">
+                                <a href="{{ route('tasks.all') }}">
+                                    <span class="sub-item">Tất cả công việc</span>
+                                </a>
+                            </li>
+                            @endif
                             <li class="{{ request()->routeIs('tasks.index') ? 'active' : ''}}">
                                 <a href="{{ route('tasks.index') }}">
-                                    <span class="sub-item">{{ strtoupper(auth()->user()->role) == 'SUPPER ADMIN' ? 'Công việc' : 'Việc của tôi' }}</span>
+                                    <span class="sub-item">Việc của tôi</span>
                                 </a>
                             </li>
                             <li class="{{ request()->routeIs('tasks.list') ? 'active' : ''}}">

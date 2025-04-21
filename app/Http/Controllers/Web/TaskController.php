@@ -22,6 +22,11 @@ class TaskController extends Controller
         $this->taskService = $taskService;
     }
 
+    public function all() {
+        $tasks = $this->taskService->all(null, true);
+        return view('pages.task.index', compact('tasks'));
+    }
+
     public function index()
     {
         $tasks = $this->taskService->all();

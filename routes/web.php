@@ -50,6 +50,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     });
 
     Route::controller(TaskController::class)->prefix('tasks')->group(function () {
+        Route::get('/all', 'all')->name('tasks.all')->middleware('permission.action:Task Management,viewAll');
         Route::get('/', 'index')->name('tasks.index')->middleware('permission.action:Task Management,viewAny');
         Route::get('/created-by', 'list')->name('tasks.list')->middleware('permission.action:Task Management,viewAny');
         Route::get('/create', 'create')->name('tasks.create')->middleware('permission.action:Task Management,create');
