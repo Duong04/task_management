@@ -44,7 +44,7 @@
                     <div class="collapse" id="base">
                         <ul class="nav nav-collapse">
                             @php
-                                $canViewTask = auth()->user()->can('general-check', ['Task Management', 'viewAny']);
+                                $canViewTask = auth()->user()->can('general-check', ['Task Management', 'viewAll']);
                             @endphp
                             @if (strtoupper(auth()->user()->role) == 'SUPPER ADMIN' || $canViewTask)
                             <li class="{{ request()->routeIs('tasks.all') ? 'active' : ''}}">
