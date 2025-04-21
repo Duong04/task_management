@@ -48,7 +48,8 @@ class TaskController extends Controller
     public function show($id) {
         $task = $this->taskService->findById($id);
         $users = $this->userService->all();
-        $projects = $this->projectService->all();
+        $projects = $this->projectService->all(null, true);
+
 
         if (!$task) {
             abort(404);
@@ -60,7 +61,8 @@ class TaskController extends Controller
     public function edit($id) {
         $task = $this->taskService->findById($id);
         $users = $this->userService->all();
-        $projects = $this->projectService->all();
+        $projects = $this->projectService->all(null, true);
+
 
         if (!$task) {
             abort(404);

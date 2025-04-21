@@ -24,7 +24,8 @@ class TaskService {
 
 
             if ($type) {
-                $tasks->where($type, $user->id);
+                $tasks->where($type, $user->id)
+                ->where('assigned_to', '!=', $user->id);
             }else {
                 if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
                     $tasks->where('assigned_to', $user->id);
