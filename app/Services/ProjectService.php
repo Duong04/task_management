@@ -16,7 +16,7 @@ class ProjectService {
         $this->firebaseService = $firebaseService;
     }
 
-    public function all($type = null) {
+    public function all($type = null, $only = false) {
         try {
             $projects = Project::query();
             $user = auth()->user();
@@ -27,6 +27,13 @@ class ProjectService {
 
             if ($type) {
                 $projects->where('type', $type);
+            }
+
+            if ($only) {
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
+                    $projects->where('manager_id', $user->id)
+                        ->orWhere('created_by', $user->id);
+                }
             }
 
             if ($type == 'user') {

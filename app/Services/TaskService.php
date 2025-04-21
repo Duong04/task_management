@@ -23,12 +23,12 @@ class TaskService {
             ->firstWhere('name', 'Task Management')['actions'] ?? [];
 
 
-            if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
-                $tasks->where('assigned_to', $user->id);
-            }
-
             if ($type) {
                 $tasks->where($type, $user->id);
+            }else {
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
+                    $tasks->where('assigned_to', $user->id);
+                }
             }
 
             $tasks = $tasks->orderByDesc('id')->get();

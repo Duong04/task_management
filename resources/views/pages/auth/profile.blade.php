@@ -121,36 +121,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="px-3 mt-3">
-                        <h6 class="py-0">Chi tiết</h6>
-                        <hr>
-                        <ul class="nav d-flex flex-column" style="gap: 10px">
-                            <li class="fs-7">
-                                <span class="fw-semibold">Email:</span>
-                                <span class="text-midgray">{{ auth()->user()->email ?? 'N/A' }}</span>
-                            </li>
-                            <li class="fs-7">
-                                <span class="fw-semibold">Chức vụ:</span>
-                                <span class="text-midgray">{{ auth()->user()?->position?->name ?? 'N/A' }}</span>
-                            </li>
-                            <li class="fs-7">
-                                <span class="fw-semibold">Ngày sinh:</span>
-                                <span class="text-midgray">{{ auth()->user()?->userDetail?->dob ? format_date(auth()->user()->userDetail->dob) : 'N/A' }}</span>
-                            </li>
-                            <li class="fs-7">
-                                <span class="fw-semibold">Giới tính:</span>
-                                <span class="text-midgray">{{ auth()->user()?->userDetail?->gender ? (auth()->user()->userDetail->gender == 'male' ? 'Nam' : 'Nữ') : 'N/A' }}</span>
-                            </li>
-                            <li class="fs-7">
-                                <span class="fw-semibold">Số điện thoại:</span>
-                                <span class="text-midgray">{{ auth()->user()?->userDetail?->phone ?? 'N/A' }}</span>
-                            </li>
-                            <li class="fs-7">
-                                <span class="fw-semibold">Địa chỉ:</span>
-                                <span class="text-midgray">{{ auth()->user()?->userDetail?->address ?? 'N/A' }}</span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div class="col-8 bg-white p-5">
                     <div class="row mt-3">

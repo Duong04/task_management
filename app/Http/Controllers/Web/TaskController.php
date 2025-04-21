@@ -37,7 +37,7 @@ class TaskController extends Controller
     public function create()
     {
         $users = $this->userService->all();
-        $projects = $this->projectService->all();
+        $projects = $this->projectService->all(null, true);
         return view('pages.task.create', compact('users', 'projects'));
     }
 

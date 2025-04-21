@@ -119,37 +119,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="px-3 mt-3">
-                            <h6 class="py-0">Chi tiết</h6>
-                            <hr>
-                            <ul class="nav d-flex flex-column" style="gap: 10px">
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Email:</span>
-                                    <span class="text-midgray">{{ $user->email ?? 'N/A' }}</span>
-                                </li>
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Chức vụ:</span>
-                                    <span class="text-midgray">{{ $user->userDetail?->position?->name ?? 'N/A' }}</span>
-                                </li>
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Ngày sinh:</span>
-                                    <span class="text-midgray">{{ format_date($user?->userDetail?->dob) ?? 'N/A' }}</span>
-                                </li>
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Giới tính:</span>
-                                    <span
-                                        class="text-midgray">{{ $user?->userDetail?->gender == 'male' ? 'Nam' : 'Nữ' }}</span>
-                                </li>
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Số điện thoại:</span>
-                                    <span class="text-midgray">{{ $user?->userDetail?->phone ?? 'N/A' }}</span>
-                                </li>
-                                <li class="fs-7">
-                                    <span class="fw-semibold">Địa chỉ:</span>
-                                    <span class="text-midgray">{{ $user?->userDetail?->address ?? 'N/A' }}</span>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                     <div class="col-8 bg-white p-3">
                         <!-- Nav tabs -->
