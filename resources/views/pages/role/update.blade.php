@@ -35,7 +35,7 @@
             <div class="col-12 row">
                 <div class="row mx-0">
                     <div class="form-group col-6 {{ $errors->first('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên vai trò</label>
+                        <label for="name">Tên vai trò (<span class="text-danger">*</span>)</label>
                         <input
                             value="{{ $role['name'] }}"
                             type="text"
@@ -108,7 +108,8 @@
                 </div>
             </div>
             <div class="col-6 form-group">
-                <button class="btn btn-primary">Cập nhật vai trò</button>
+                <button class="btn btn-primary">Cập nhật</button>
+                <a href="{{ route('roles.index') }}" class="btn btn-outline-warning">Hủy</a>
             </div>
           </form>
         </div>

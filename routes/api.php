@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Apis\V1\DashboardController;
 use App\Http\Controllers\Apis\V1\DiscussionController;
 use App\Http\Controllers\Apis\V1\UploadController;
 use App\Http\Controllers\Web\AuthController;
@@ -19,3 +20,5 @@ Route::controller(DiscussionController::class)->prefix('/v1/discussions')->group
     Route::post('/', 'create');
     Route::delete('/{id}', 'delete');
 });
+
+Route::get('/v1/tasks/stats-time', [DashboardController::class, 'taskStatsByTime']);

@@ -56,10 +56,12 @@ class UserService {
     public function update($request, $id) {
         try {
             $data = $request->validated();
+            $redirect = $request->query('redirect');
 
-            if (!$data['password']) {
+            if (isset($data['password']) && !$data['password']) {
                 unset($data['password']);
             }
+
             $user = User::find($id);
 
             if (!$user) {
@@ -69,9 +71,14 @@ class UserService {
 
             $user->update($data);
 
-            if ($user) {
+            if ($user && isset($data['user_detail'])) {
                 $data['user_detail']['user_id'] = $user->id;
                 UserDetail::updateOrCreate(['user_id' => $user->id], $data['user_detail']);
+            }
+
+            if ($redirect == 'back') {
+                toastr()->success('Người dùng đã được cập nhật thành công!');
+                return redirect()->back();
             }
 
             toastr()->success('Người dùng đã được cập nhật thành công!');

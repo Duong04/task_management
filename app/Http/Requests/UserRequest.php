@@ -40,6 +40,7 @@ class UserRequest extends FormRequest
         if ($id) {
             $rules['email'] .= ",$id";
             $rules['password'] = 'nullable|string|min:8|max:255';
+            $rules['role_id'] = 'nullable';
         }
 
         return $rules;

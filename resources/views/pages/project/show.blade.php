@@ -93,22 +93,22 @@
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script type="module" src="/js/comment.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        const editBtn = document.getElementById('edit-project-btn');
-        const viewDiv = document.getElementById('project-view');
-        const formDiv = document.getElementById('project-edit-form');
-        const cancelBtn = document.getElementById('cancel-edit-project');
+        document.addEventListener('DOMContentLoaded', function() {
+            const editBtn = document.getElementById('edit-project-btn');
+            const viewDiv = document.getElementById('project-view');
+            const formDiv = document.getElementById('project-edit-form');
+            const cancelBtn = document.getElementById('cancel-edit-project');
 
-        editBtn.addEventListener('click', () => {
-            viewDiv.classList.add('d-none');
-            formDiv.classList.remove('d-none');
-        });
+            editBtn.addEventListener('click', () => {
+                viewDiv.classList.add('d-none');
+                formDiv.classList.remove('d-none');
+            });
 
-        cancelBtn.addEventListener('click', () => {
-            formDiv.classList.add('d-none');
-            viewDiv.classList.remove('d-none');
+            cancelBtn.addEventListener('click', () => {
+                formDiv.classList.add('d-none');
+                viewDiv.classList.remove('d-none');
+            });
         });
-    });
     </script>
 @endsection
 
@@ -141,56 +141,52 @@
 
     <div class="container">
         <div class="page-inner">
-            <div class="page-header">
-                <h3 class="fw-bold mb-3"><a href="{{ route('projects.index') }}" class="me-1"><i
-                            class="fas fa-arrow-left"></i></a> Chi tiết dự án</h3>
-                <ul class="breadcrumbs mb-3">
-                    <li class="nav-home"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
-                    <li class="separator"><i class="icon-arrow-right"></i></li>
-                    <li class="nav-item"><a href="{{ route('projects.index') }}">Quản lý dự án</a></li>
-                    <li class="separator"><i class="icon-arrow-right"></i></li>
-                    <li class="nav-item"><a href="#">Chi tiết dự án</a></li>
-                </ul>
+            <div class="page-header justify-content-between">
+                <h3 class="fw-bold"><a href="{{ route('projects.index') }}" class="me-1"><i class="fas fa-arrow-left"></i></a>
+                    Chi tiết dự án</h3>
+                <div class="row mb-3 justify-content-end">
+                    <div class="col-md-12 text-end d-flex">
+                        <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-outline-primary me-2">✏️
+                            Chỉnh sửa</a>
+                        <form action="{{ route('projects.delete', $project->id) }}" id="delete-form-{{ $project->id }}"
+                            method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger delete">🗑️ Xóa</button>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <div class="row pb-5">
                 <div class="col-md-8">
                     <div class="border rounded p-4 bg-white shadow-sm">
-                        <div class="row mb-3 justify-content-end">
-                            <div class="col-md-6 text-end">
-                                <a href="{{ route('projects.edit', $project->id) }}" class="btn btn-outline-primary">✏️
-                                    Chỉnh sửa</a>
-                                <form action="{{ route('projects.delete', $project->id) }}" id="delete-form-{{ $project->id }}" method="POST" class="d-inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-danger delete">🗑️ Xóa</button>
-                                </form>
-                            </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="row mb-3">
-                                <div class="col-md-6 mb-2"><span>Người giao việc:</span> <br>
-                                    <strong>{{ $project->createdBy->name ?? 'N/A' }}</strong>
+                        <div class="row mb-1">
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-2"><span>Tên dự án:</span> <br>
+                                    <strong>{{ $project->name ?? 'N/A' }}</strong>
                                 </div>
-                                <div class="col-md-6 mb-2"><span>Phân loại:</span> <br>
-                                    <span class="badge-custom {{ $project->type == 'user' ? 'badge-blue' : 'badge-purple' }}">{{ $project->type == 'user' ? 'Cá nhân' : 'Phòng ban' }}</span>
+                                <div class="col-md-6 mb-4"><span>Phân loại:</span> <br>
+                                    <span
+                                        class="badge-custom {{ $project->type == 'user' ? 'badge-blue' : 'badge-purple' }}">{{ $project->type == 'user' ? 'Cá nhân' : 'Phòng ban' }}</span>
                                 </div>
-                                <div class="col-md-6 mb-2"><span>{{ $project->type == 'user' ? 'Người thực hiện' : 'Phòng ban' }}</span> <br>
+                                <div class="col-md-6 mb-4">
+                                    <span>{{ $project->type == 'user' ? 'Người quản trị' : 'Phòng ban' }}</span> <br>
                                     <strong>{{ $project->type == 'user' ? $project->creator?->name : $project->department?->name }}</strong>
                                 </div>
-                                <div class="col-md-6 mb-2"><span>Ngày bắt đầu:</span><br>
+                                <div class="col-md-6 mb-4"><span>Ngày bắt đầu:</span><br>
                                     <strong>{{ format_date($project->start_date) }}</strong>
                                 </div>
-                                <div class="col-md-6 mb-2"><span>Ngày kết thúc:</span><br>
+                                <div class="col-md-6 mb-4"><span>Ngày kết thúc:</span><br>
                                     <strong>{{ format_date($project->end_date) }}</strong>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <strong>Mô tả dự án:</strong>
-                            <p class="mt-2">{!! $project->description !!}</p>
+                        <div class="mb-3" style="margin-top: -12px;">
+                            <span>Mô tả:</span>
+                            <div>{!! $project->description !!}</div>
                         </div>
                     </div>
 
@@ -203,21 +199,25 @@
                                     <div><strong>{{ $task->name }}</strong></div>
 
                                     <div class="d-flex align-items-center gap-2">
-                                        <a data-bs-toggle="tooltip"
-                                        title="Xem chi tiết" href="{{ route('tasks.show', $task->id) }}" class="text-primary" title="Xem">
+                                        <a data-bs-toggle="tooltip" title="Xem chi tiết"
+                                            href="{{ route('tasks.show', $task->id) }}" class="text-primary"
+                                            title="Xem">
                                             <i class="fas fa-eye"></i>
                                         </a>
 
-                                        <a data-bs-toggle="tooltip"
-                                        title="sửa" href="{{ route('tasks.edit', $task->id) }}" class="text-success" title="Sửa">
+                                        <a data-bs-toggle="tooltip" title="sửa"
+                                            href="{{ route('tasks.edit', $task->id) }}" class="text-success"
+                                            title="Sửa">
                                             <i class="fas fa-edit"></i>
                                         </a>
 
-                                        <form action="{{ route('tasks.delete', $task->id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa công việc này không?')" style="display:inline;">
+                                        <form action="{{ route('tasks.delete', $task->id) }}" method="POST"
+                                            onsubmit="return confirm('Bạn có chắc muốn xóa công việc này không?')"
+                                            style="display:inline;">
                                             @csrf
                                             @method('DELETE')
-                                            <button data-bs-toggle="tooltip"
-                                            title="Xóa" type="submit" class="btn btn-link p-0 m-0 text-danger delete" title="Xóa">
+                                            <button data-bs-toggle="tooltip" title="Xóa" type="submit"
+                                                class="btn btn-link p-0 m-0 text-danger delete" title="Xóa">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
@@ -230,7 +230,7 @@
 
                                 <div class="d-flex justify-content-between small">
                                     <div>Người thực hiện: {{ $task->assignedTo->name ?? 'N/A' }}</div>
-                                    <div>Ưu tiên: 
+                                    <div>Ưu tiên:
                                         <span class="badge-custom {{ $priority_color[$task->priority] }}">
                                             {{ $priorities[$task->priority] }}
                                         </span>
@@ -247,21 +247,6 @@
                         @endforelse
 
                     </div>
-
-                    {{-- Bình luận --}}
-                    <div class="border rounded p-4 bg-white shadow-sm mt-4">
-                        <h6 class="mb-3">Thảo luận dự án</h6>
-                        <div id="comments"></div>
-                        <div class="position-relative form-comment">
-                            <textarea id="comment" data-type="project" data-id="{{ $project->id }}" class="form-control comment" name="comment"
-                                placeholder="Chia sẻ ý kiến của bạn tại đây"></textarea>
-                            <div id="emoji-button"><i class="fas fa-smile"></i>
-                                <div id="emoji-picker"><emoji-picker></emoji-picker></div>
-                            </div>
-                            <button disabled id="btn-comment" class="btn-comment-2"><i
-                                    class="fas fa-paper-plane"></i></button>
-                        </div>
-                    </div>
                 </div>
 
                 {{-- Sidebar tiến độ dự án --}}
@@ -269,13 +254,15 @@
                     <div class="border rounded p-4 bg-white shadow-sm">
                         <h6 class="mb-3 d-flex justify-content-between align-items-center">
                             Tiến độ dự án
-                            <button class="btn btn-sm btn-outline-warning" id="edit-project-btn"data-bs-toggle="tooltip" title="Sửa"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-sm text-success" id="edit-project-btn"data-bs-toggle="tooltip"
+                                title="Sửa"><i class="fa fa-edit"></i></button>
                         </h6>
-                    
+
                         {{-- Hiển thị --}}
                         <div id="project-view">
                             <div class="mb-2"><strong>Trạng thái:</strong>
-                                <span class="badge bg-info text-dark">{{ $status[$project->status] }}</span>
+                                <span
+                                    class="badge {{ $status_color[$project->status] }}">{{ $status[$project->status] }}</span>
                             </div>
                             <div class="mb-2"><strong>Tiến độ trung bình:</strong></div>
                             <div class="progress" style="height: 12px;">
@@ -286,13 +273,13 @@
                             </div>
                             <div class="text-end mt-1 small">{{ $project->progress }}%</div>
                         </div>
-                    
+
                         <form id="project-edit-form" class="d-none mt-3"
                             action="{{ route('projects.update', ['id' => $project->id, 'redirect' => 'back']) }}"
                             method="POST">
                             @csrf
                             @method('PUT')
-                    
+
                             <div class="mb-2"><strong>Trạng thái:</strong>
                                 <select name="status" class="form-select form-select-sm mt-2">
                                     @foreach ($status as $key => $label)
@@ -302,35 +289,14 @@
                                     @endforeach
                                 </select>
                             </div>
-                    
+
                             <div class="text-end">
-                                <button type="button" class="btn btn-sm btn-secondary me-2" id="cancel-edit-project">Hủy</button>
+                                <button type="button" class="btn btn-sm btn-secondary me-2"
+                                    id="cancel-edit-project">Hủy</button>
                                 <button type="submit" class="btn btn-sm btn-success">Lưu</button>
                             </div>
                         </form>
                     </div>
-                    
-                    @if ($project->attachments->count())
-                        <div class="col-12 mt-3">
-                            <strong>Tệp đính kèm:</strong>
-                            <div class="row mt-1">
-                                @foreach ($project->attachments as $file)
-                                    <div class="col-12 mb-3">
-                                        <div
-                                            class="py-3 px-2 rounded border d-flex justify-content-between align-items-center">
-                                            <a href="{{ $file->file_path }}" target="_blank"
-                                                class="d-inline-block text-truncate"
-                                                title="Xem tệp">{{ $file->file_path }}</a>
-                                            <a href="{{ $file->file_path }}" target="_blank" download
-                                                class="btn btn-sm btn-outline-primary ms-2">
-                                                <i class="fas fa-download"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>

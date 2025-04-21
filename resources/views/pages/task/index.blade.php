@@ -1,5 +1,19 @@
 @extends('layouts.master-layout', ['title' => 'Admin - Danh sách công việc'])
 
+@section('script')
+    <script>
+        $(document).ready(function () {
+          var table = $('#basic-datatables-filter').DataTable();
+
+          $('#statusFilter').on('change', function () {
+              var selected = $(this).val();
+              table.column(7) 
+                  .search(selected)
+                  .draw();
+          });
+        });
+    </script>
+@endsection
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -31,22 +45,33 @@
                         <div class="card-header">
                             <div class="d-flex align-item-center">
                                 <h4 class="card-title">Danh sách</h4>
+                                @can('general-check', ['Task Management', 'create'])
                                 <a href="{{ route('tasks.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
                                     Tạo công việc
                                 </a>
+                                                @endcan
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="basic-datatables" class="display table table-hover">
+                                <div class="mb-3">
+                                    <label for="statusFilter" class="form-label">Lọc theo trạng thái:</label>
+                                    <select id="statusFilter" class="form-select" style="width: 200px;">
+                                        <option value="">Tất cả</option>
+                                        <option value="Chưa bắt đầu">Chưa bắt đầu</option>
+                                        <option value="Đang thực hiện">Đang thực hiện</option>
+                                        <option value="Hoàn thành">Hoàn thành</option>
+                                    </select>
+                                </div>
+                                <table id="basic-datatables-filter" class="display table table-hover">
                                     <thead class="table-secondary">
                                         <tr>
                                             <th style="width: 50px;">Stt</th>
                                             <th><div style="width: 150px;">Code</div></th>
                                             <th><div style="width: 150px;">Tên công việc</div></th>
                                             <th><div style="width: 150px;">Tên dự án</div></th>
-                                            <th><div style="width: 250px;">Người tạo</div></th>
+                                            <th><div style="width: 250px;">Người giao việc</div></th>
                                             <th><div style="width: 250px;">Người thực hiện</div></th>
                                             <th><div style="width: 150px;">Tiến độ</div></th>
                                             <th><div style="width: 150px;">Trạng thái</div></th>
@@ -132,25 +157,31 @@
                                                 <td><div style="width: 150px;">{{ format_date($item->due_date) ?? 'N/A' }}</div></td>
                                                 <td>
                                                     <div class="form-button-action">
+                                                        @can('general-check', ['Task Management', 'view'])
                                                         <a href="{{ route('tasks.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Xem chi tiết" class="btn btn-link text-warning" data-original-title="Edit Task">
                                                             <i class="fa fa-eye"></i>
                                                           </a>
+                                                @endcan
+                                                          @can('general-check', ['Task Management', 'update'])
                                                           <a href="{{ route('tasks.edit', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link text-primary" data-original-title="Edit Task">
                                                             <i class="fa fa-edit"></i>
                                                           </a>
-                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('tasks.delete', ['id' => $item->id]) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button
-                                                              data-bs-toggle="tooltip"
-                                                              title="Xóa"
-                                                              class="btn btn-link text-danger delete"
-                                                              data-original-title="Remove"
-                                                              data-id="{{ $item->id }}"
-                                                            >
-                                                              <i class="fa fa-times"></i>
-                                                            </button>
-                                                          </form>
+                                                @endcan
+                                                          @can('general-check', ['Task Management', 'delete'])
+                                                          <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('tasks.delete', ['id' => $item->id]) }}">
+                                                              @csrf
+                                                              @method('DELETE')
+                                                              <button
+                                                                data-bs-toggle="tooltip"
+                                                                title="Xóa"
+                                                                class="btn btn-link text-danger delete"
+                                                                data-original-title="Remove"
+                                                                data-id="{{ $item->id }}"
+                                                              >
+                                                                <i class="fa fa-times"></i>
+                                                              </button>
+                                                            </form>
+                                                @endcan
                                                     </div>
                                                 </td>
                                             </tr>

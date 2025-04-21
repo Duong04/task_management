@@ -4,26 +4,7 @@
 <div class="container">
     <div class="page-inner">
         <div class="page-header">
-            <h3 class="fw-bold mb-3">Thêm người dùng</h3>
-            <ul class="breadcrumbs mb-3">
-            <li class="nav-home">
-                <a href="{{ route('dashboard') }}">
-                <i class="icon-home"></i>
-                </a>
-            </li>
-            <li class="separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <a href="">Người dùng</a>
-            </li>
-            <li class="separator">
-                <i class="icon-arrow-right"></i>
-            </li>
-            <li class="nav-item">
-                <a href="#">Thêm người dùng</a>
-            </li>
-            </ul>
+            <h3 class="fw-bold mb-3"><a href="{{ route('users.index') }}" class="me-1"><i class="fas fa-arrow-left"></i></a> Thêm người dùng</h3>
         </div>
         <div class="row">
           <form class="row col-12" action="{{ route('users.store') }}" method="POST">
@@ -31,7 +12,7 @@
             <div class="col-12 row">
                 <div class="row mx-0">
                     <div class="form-group col-4 {{ $errors->first('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên người dùng</label>
+                        <label for="name">Tên người dùng ( <span class="text-danger">*</span> )</label>
                         <input
                             value="{{ old('name') }}"
                             type="text"
@@ -45,7 +26,7 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('email') ? ' has-error' : '' }}">
-                        <label for="email">Email người dùng</label>
+                        <label for="email">Email người dùng ( <span class="text-danger">*</span> )</label>
                         <input
                             value="{{ old('email') }}"
                             type="text"
@@ -59,7 +40,7 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('password') ? ' has-error' : '' }}">
-                        <label for="password">Mật khẩu</label>
+                        <label for="password">Mật khẩu ( <span class="text-danger">*</span> )</label>
                         <input
                             value="{{ old('password') }}"
                             type="password"
@@ -73,7 +54,7 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('role_id') ? ' has-error' : '' }}">
-                        <label for="role_id">Vai trò</label>
+                        <label for="role_id">Vai trò ( <span class="text-danger">*</span> )</label>
                         <select name="role_id" id="role_id" class="form-control">
                             <option value="">Chọn vai trò</option>
                             @foreach ($roles as $role)
@@ -170,7 +151,8 @@
                         @endif
                     </div>
                     <div class="col-12 form-group">
-                        <button class="btn btn-primary">Thêm người dùng</button>
+                        <button class="btn btn-primary">Lưu</button>
+                        <a href="{{ route('users.index') }}" class="btn btn-outline-warning">Hủy</a>
                     </div>
                 </div>
             </div>

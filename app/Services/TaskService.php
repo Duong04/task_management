@@ -5,8 +5,10 @@ use App\Models\Attachment;
 use App\Models\Task;
 use Auth;
 use App\Services\FirebaseService;
+use App\Traits\RoleFormat;
 
 class TaskService {
+    use RoleFormat;
     private $firebaseService;
     public function __construct(FirebaseService $firebaseService) {
         $this->firebaseService = $firebaseService;
@@ -16,8 +18,12 @@ class TaskService {
         try {
             $tasks = Task::query();
             $user = auth()->user();
+            $role = $this->formatRole($user->role);
+            $hasViewAllOrder = collect($role['permissions'])
+            ->firstWhere('name', 'Task Management')['actions'] ?? [];
 
-            if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
+
+            if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
                 $tasks->where('assigned_to', $user->id);
             }
 
@@ -146,6 +152,86 @@ class TaskService {
             return redirect()->back();
         }
     }
+
+    public function statsByStatus($status = null, $overdue = false, $user = null)
+    {
+        try {
+            $tasks = Task::query();
+
+            if ($status) {
+                $tasks->where('status', $status);
+            }
+
+            if ($user) {
+                $tasks->where('assigned_to', $user);
+            }
+
+            if ($overdue) {
+                $tasks->where('status', '!=', 'completed')
+                          ->whereDate('due_date', '<', now());
+            }
+
+            $user_auth = Auth::user();
+
+            if (strtoupper($user_auth->role->name) !== 'SUPPER ADMIN') {
+                $tasks->where('assigned_to', $user_auth->id);
+            }
+
+            return $tasks->count();
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+    }
+
+    public function quickStats() 
+    {
+        $user_auth = Auth::user();
+        $isSupperAdmin = strtoupper($user_auth->role->name) === 'SUPPER ADMIN';
+
+        $today = now();
+        $startOfWeek = now()->startOfWeek();
+        $endOfWeek = now()->endOfWeek();
+        $startOfMonth = now()->startOfMonth();
+        $endOfMonth = now()->endOfMonth();
+
+        $taskQuery = Task::query();
+        $completedQuery = Task::query()->where('status', 'completed');
+        
+        if (!$isSupperAdmin) {
+            $taskQuery->where('assigned_to', $user_auth->id);
+            $completedQuery->where('assigned_to', $user_auth->id);
+        }
+
+        return [
+            'today_tasks' => (clone $taskQuery)->whereDate('due_date', $today)
+                                            ->where('status', '!=', 'completed')
+                                            ->count(),
+
+            'week_tasks' => (clone $taskQuery)->whereBetween('due_date', [$startOfWeek, $endOfWeek])
+                                            ->where('status', '!=', 'completed')
+                                            ->count(),
+
+            'month_tasks' => (clone $taskQuery)->whereBetween('due_date', [$startOfMonth, $endOfMonth])
+                                            ->where('status', '!=', 'completed')
+                                            ->count(),
+
+            'total_tasks' => (clone $taskQuery)->where('status', '!=', 'completed')
+                                            ->count(),
+
+            'today_completed' => (clone $completedQuery)->whereDate('updated_at', $today)
+                                                        ->count(),
+
+            'week_completed' => (clone $completedQuery)->whereBetween('updated_at', [$startOfWeek, $endOfWeek])
+                                                    ->count(),
+
+            'month_completed' => (clone $completedQuery)->whereBetween('updated_at', [$startOfMonth, $endOfMonth])
+                                                        ->count(),
+
+            'total_completed' => (clone $completedQuery)->count(),
+        ];
+    }
+
+    
 
 
     private function generateCode()

@@ -29,7 +29,7 @@
             <form class="row col-12" action="{{ route('permissions.store') }}" method="POST">
                 @csrf
                 <div class="form-group col-6 {{ $errors->first('name') ? ' has-error' : '' }}">
-                    <label for="name">Tên quyền</label>
+                    <label for="name">Tên quyền (<span class="text-danger">*</span>)</label>
                     <input
                         value="{{ old('name') }}"
                         type="text"
@@ -71,7 +71,8 @@
                     </div>
                 </div>
                 <div class="col-6 form-group">
-                    <button class="btn btn-primary">Thêm ngay</button>
+                    <button class="btn btn-primary">Lưu</button>
+                    <a href="{{ route('permissions.index') }}" class="btn btn-outline-warning">Hủy</a>
                 </div>
             </form>
         </div>

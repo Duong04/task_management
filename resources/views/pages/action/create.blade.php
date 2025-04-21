@@ -28,7 +28,7 @@
             <form class="row col-12" action="{{ route('actions.store') }}" method="POST">
                 @csrf
                 <div class="form-group col-6 {{ $errors->first('name') ? ' has-error' : '' }}">
-                    <label for="name">Tên hành động</label>
+                    <label for="name">Tên hành động (<span class="text-danger">*</span>)</label>
                     <input
                         value="{{ old('name') }}"
                         type="text"
@@ -42,7 +42,7 @@
                     @endif
                 </div>
                 <div class="form-group col-6 {{ $errors->first('value') ? ' has-error' : '' }}">
-                    <label for="value">Bí danh</label>
+                    <label for="value">Bí danh (<span class="text-danger">*</span>)</label>
                     <input
                         value="{{ old('value') }}"
                         type="text"
@@ -70,7 +70,8 @@
                     </div>
                 </div>
                 <div class="col-6 form-group">
-                    <button class="btn btn-primary">Thêm ngay</button>
+                    <button class="btn btn-primary">Lưu</button>
+                    <a href="{{ route('actions.index') }}" class="btn btn-outline-warning">Hủy</a>
                 </div>
             </form>
         </div>

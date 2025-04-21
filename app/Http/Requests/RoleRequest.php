@@ -25,7 +25,7 @@ class RoleRequest extends FormRequest
         
         $rules = [
             'name' => 'required|string|max:255|unique:roles,name',
-            'description' => 'required',
+            'description' => 'nullable',
         ];
 
         if ($id) {

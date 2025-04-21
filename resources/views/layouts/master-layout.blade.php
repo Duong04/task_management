@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="/favicons.ico" type="image/x-icon">
     <title>{{ $title ?? 'Admin' }}</title>
     <script src="/assets/master/js/plugin/webfont/webfont.min.js"></script>
     <script>

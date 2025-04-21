@@ -31,10 +31,12 @@
                         <div class="card-header">
                             <div class="d-flex align-item-center">
                                 <h4 class="card-title">Danh sách</h4>
-                                <a href="{{ route('permissions.create') }}" class="btn btn-primary btn-round ms-auto">
-                                    <i class="fa fa-plus"></i>
-                                    Thêm quyền
-                                </a>
+                                @can('general-check', ['Permission Management', 'create'])
+                                    <a href="{{ route('permissions.create') }}" class="btn btn-primary btn-round ms-auto">
+                                        <i class="fa fa-plus"></i>
+                                        Thêm quyền
+                                    </a>
+                                @endcan
                             </div>
                         </div>
                         <div class="card-body">
@@ -63,22 +65,27 @@
                                                 <td>{{ $item->updated_at }}</td>
                                                 <td>
                                                     <div class="form-button-action">
-                                                        <a href="{{ route('permissions.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                          <i class="fa fa-edit"></i>
-                                                        </a>
-                                                        <form class="d-flex align-items-center" id="delete-form-{{ $item->id }}" method="POST" action="{{ route('permissions.delete', ['id' => $item->id]) }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button
-                                                              data-bs-toggle="tooltip"
-                                                              title="Xóa"
-                                                              class="btn btn-link btn-danger delete"
-                                                              data-original-title="Remove"
-                                                              data-id="{{ $item->id }}"
-                                                            >
-                                                              <i class="fa fa-times"></i>
-                                                            </button>
-                                                          </form>
+                                                        @can('general-check', ['Permission Management', 'update'])
+                                                            <a href="{{ route('permissions.show', ['id' => $item->id]) }}"
+                                                                type="button" data-bs-toggle="tooltip" title="Sửa"
+                                                                class="btn btn-link btn-primary btn-lg"
+                                                                data-original-title="Edit Task">
+                                                                <i class="fa fa-edit"></i>
+                                                            </a>
+                                                        @endcan
+                                                        @can('general-check', ['Permission Management', 'delete'])
+                                                            <form class="d-flex align-items-center"
+                                                                id="delete-form-{{ $item->id }}" method="POST"
+                                                                action="{{ route('permissions.delete', ['id' => $item->id]) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button data-bs-toggle="tooltip" title="Xóa"
+                                                                    class="btn btn-link btn-danger delete"
+                                                                    data-original-title="Remove" data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endcan
                                                     </div>
                                                 </td>
                                             </tr>

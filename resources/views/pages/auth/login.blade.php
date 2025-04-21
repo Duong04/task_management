@@ -3,9 +3,6 @@
     <div class="auth-main">
         <div class="auth-wrapper v3">
             <div class="auth-form">
-                <div class="auth-header">
-                    <a href="#"><img src="/assets/auth/images/logo-dark.svg" alt="img" /></a>
-                </div>
                 <div class="card my-5">
                     <form action="{{ route('action.login') }}" method="POST" class="card-body">
                         @csrf

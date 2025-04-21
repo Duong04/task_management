@@ -31,7 +31,7 @@
             <div class="col-12 row">
                 <div class="row mx-0">
                     <div class="form-group col-6 {{ $errors->first('name') ? ' has-error' : '' }}">
-                        <label for="name">Tên phòng ban</label>
+                        <label for="name">Tên phòng ban (<span class="text-danger">*</span>)</label>
                         <input
                             value="{{ old('name') }}"
                             type="text"
@@ -59,7 +59,8 @@
                         @endif
                     </div>
                     <div class="col-6 form-group">
-                        <button class="btn btn-primary">Thêm phòng ban</button>
+                        <button class="btn btn-primary">Lưu</button>
+                        <a href="{{ route('departments.index') }}" class="btn btn-outline-warning">Hủy</a>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@ class PermissionRequest extends FormRequest
 
         $rules = [
             'name' => 'required|string|unique:permissions,name',
-            'description' => 'required|string'
+            'description' => 'nullable|string'
         ];
 
         if ($id) {

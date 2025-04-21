@@ -27,25 +27,6 @@
         <div class="page-inner">
             <div class="page-header">
                 <h3 class="fw-bold mb-3"><a href="{{ route('tasks.index') }}" class="me-1"><i class="fas fa-arrow-left"></i></a> Tạo công việc</h3>
-                <ul class="breadcrumbs mb-3">
-                    <li class="nav-home">
-                        <a href="{{ route('dashboard') }}">
-                            <i class="icon-home"></i>
-                        </a>
-                    </li>
-                    <li class="separator">
-                        <i class="icon-arrow-right"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="">Quản lý công việc</a>
-                    </li>
-                    <li class="separator">
-                        <i class="icon-arrow-right"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#">Tạo công việc</a>
-                    </li>
-                </ul>
             </div>
             <div class="row">
                 <form class="row col-12" action="{{ route('tasks.store') }}" method="POST" enctype="multipart/form-data">
@@ -72,9 +53,9 @@
                         @endif
                     </div>
                     <div class="form-group col-4 {{ $errors->first('created_by') ? ' has-error' : '' }}">
-                        <label for="created_by">Người tạo ( <span class="text-danger">*</span> )</label>
+                        <label for="created_by">Người giao việc ( <span class="text-danger">*</span> )</label>
                         <select class="form-control" name="created_by" id="created_by">
-                            <option value="">-- Người tạo --</option>
+                            <option value="">-- Người giao việc --</option>
                             @foreach ($users as $item)
                                 <option {{ old('created_by') == $item->id || auth()->id() == $item->id ? 'selected' : '' }}
                                     value="{{ $item->id }}">{{ $item->name }} ({{ $item->role->name }})</option>

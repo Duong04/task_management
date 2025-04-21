@@ -1,4 +1,4 @@
-@extends('layouts.master-layout', ['title' => 'Admin - Danh sahs người dùng'])
+@extends('layouts.master-layout', ['title' => 'Admin - Danh sách người dùng'])
 
 @section('content')
     <div class="container">
@@ -25,16 +25,18 @@
                         <div class="card-header">
                             <div class="d-flex align-item-center">
                                 <h4 class="card-title">Danh sách</h4>
+                                @can('general-check', ['User Management', 'create'])
                                 <a href="{{ route('users.create') }}" class="btn btn-primary btn-round ms-auto">
                                     <i class="fa fa-plus"></i>
                                     Tạo người dùng
                                 </a>
+                                                @endcan
                             </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="basic-datatables" class="display table table-striped table-hover">
-                                    <thead>
+                                <table id="basic-datatables" class="display table table-hover">
+                                    <thead class="table-secondary">
                                         <tr>
                                             <th>Stt</th>
                                             <th>Code</th>
@@ -88,7 +90,7 @@
                                                     </div>
                                                 </td>
                                                 <td><div style="width: 120px;"><span class="badge-custom {{ $badgeClass }}">{{ $item->role->name ?? 'N/A' }}</span></div></td>
-                                                <td><div style="width: 120px;"><span class="badge-custom {{ $item?->userDetail?->position->name ?? 'badge-gray' }} {{ $item?->userDetail?->position->name ? $badgeClass2 : '' }}">{{ $item?->userDetail?->position->name ?? 'N/A' }}</span></div></td>
+                                                <td><div style="width: 120px;"><span class="badge-custom {{ $item?->userDetail?->position?->name ?? 'badge-gray' }} {{ $item?->userDetail?->position?->name ? $badgeClass2 : '' }}">{{ $item?->userDetail?->position->name ?? 'N/A' }}</span></div></td>
                                                 <td><div style="width: 120px;" class="badge {{ $item->is_active ? 'badge-success' : 'badge-danger' }}">{{ $item->is_active ? 'Hoạt động' : 'Không hoạt động' }}</div></td>
                                                 <td><div style="width: 120px;"><span class="badge-custom {{ $item?->userDetail?->gender ?? 'badge-gray' }} {{ $item?->userDetail?->gender ? $gender_colos[$item?->userDetail?->gender] : '' }}">{{ $item?->userDetail?->gender ?? 'N/A' }}</span></div></td>
                                                 <td><div style="width: 120px;"><span class="{{ $item?->userDetail?->phone ?? 'badge-custom badge-gray' }}">{{ $item?->userDetail?->phone ?? 'N/A' }}</span></div></td>
@@ -97,9 +99,16 @@
                                                 <td><div style="width: 120px;">{{ $item?->created_at ?? 'N/A' }}</div></td>
                                                 <td>
                                                     <div class="form-button-action">
-                                                        <a href="{{ route('users.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
-                                                          <i class="fa fa-edit"></i>
-                                                        </a>
+                                                        @can('general-check', ['User Management', 'view'])
+                                                        <a href="{{ route('users.show', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Xem chi tiết" class="btn btn-link btn-warning btn-lg" data-original-title="Edit Task">
+                                                            <i class="fa fa-eye"></i>
+                                                          </a>
+                                                @endcan
+                                                          @can('general-check', ['User Management', 'update'])
+                                                          <a href="{{ route('users.edit', ['id' => $item->id]) }}" type="button" data-bs-toggle="tooltip" title="Sửa" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task">
+                                                            <i class="fa fa-edit"></i>
+                                                          </a>
+                                                @endcan
                                                     </div>
                                                 </td>
                                             </tr>

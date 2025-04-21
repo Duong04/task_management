@@ -5,9 +5,11 @@ use App\Models\Attachment;
 use App\Models\Project;
 use Auth;
 use App\Services\FirebaseService;
+use App\Traits\RoleFormat;
 
 
 class ProjectService {
+    use RoleFormat;
     private $firebaseService;
 
     public function __construct(FirebaseService $firebaseService) {
@@ -18,18 +20,22 @@ class ProjectService {
         try {
             $projects = Project::query();
             $user = auth()->user();
+            $role = $this->formatRole($user->role);
+            $hasViewAllOrder = collect($role['permissions'])
+            ->firstWhere('name', 'Project Management')['actions'] ?? [];
+
 
             if ($type) {
                 $projects->where('type', $type);
             }
 
             if ($type == 'user') {
-                if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
-                    $projects->where('creator_id', $user->id)
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
+                    $projects->where('manager_id', $user->id)
                         ->orWhere('created_by', $user->id);
                 }
             }else if ($type == 'department') {
-                if (strtoupper($user->role->name) !== 'SUPPER ADMIN') {
+                if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
                     $projects->where('department_id', $user->department_id);
                 }
             }
@@ -45,20 +51,8 @@ class ProjectService {
         try {
             $data = $request->validated();
 
+            $data['created_by'] = Auth::user()->id;
             $project = Project::create($data);
-
-            if ($request->has('attachments')) {
-                foreach ($request->attachments as $index => $attachment) {
-                    $file = $request->file("attachments.$index.file");
-
-                    if ($file && $file->isValid()) {
-                        $path = $this->firebaseService->uploadFile($file, 'tasks');
-                        $project->attachments()->create([
-                            'file_path' => $path,
-                        ]);
-                    }
-                }
-            }
 
             toastr()->success('Tạo dự án thành công!');
             return redirect()->back();
@@ -88,34 +82,6 @@ class ProjectService {
             }
 
             $project->update($data);
-
-            if ($request->has('attachments')) {
-                foreach ($request->attachments as $index => $attachment) {
-                    if (isset($attachment['id'])) {
-                        $existingAttachment = Attachment::find($attachment['id']);
-                        $file = $request->file("attachments.$index.file");
-
-                        if ($file && $file->isValid()) {
-                            $path = $this->firebaseService->uploadFile($file, 'tasks');
-                            
-                            $existingAttachment->update([
-                                'file_path' => $path,
-                            ]);
-                        }
-                    } else {
-                        $file = $request->file("attachments.$index.file");
-            
-                        if ($file && $file->isValid()) {
-                            $path = $this->firebaseService->uploadFile($file, 'tasks');
-                            
-                            $project->attachments()->create([
-                                'file_path' => $path,
-                                'description' => $attachment['description'] ?? null,
-                            ]);
-                        }
-                    }
-                }
-            }
 
             toastr()->success('Cập nhật dự án thành công!');
 

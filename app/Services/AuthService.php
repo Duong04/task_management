@@ -2,9 +2,15 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\UserDetail;
 use Auth;
+use App\Services\CloundinaryService;
 
 class AuthService {
+    private $cloundinaryService;
+    public function __construct(CloundinaryService $cloundinaryService) {
+        $this->cloundinaryService = $cloundinaryService;
+    }
     public function login($request) {
         try {
             $user = $request->validated();
@@ -46,5 +52,45 @@ class AuthService {
             toastr()->error($th->getMessage());
             return redirect()->back();
         }
+    }
+
+    public function updateProfile($request) {
+        try {
+            $data = $request->validated();
+            $user = Auth::user();
+
+            if ($request->hasFile('avatar')) {
+                $data['avatar'] = $this->cloundinaryService->upload($request->file('avatar'), 'avatar');
+            }
+
+            $user->update($data);
+
+            if (isset($data['userDetail'])) {
+                if (!$user?->userDetail) {
+                    $data['userDetail']['employee_code'] = $this->generateCodeFromName();
+
+                    $user->userDetail()->create($data['userDetail']);
+                }else {
+                    $user->userDetail->update($data['userDetail']);
+                }
+            } 
+
+            toastr()->success('Cập nhật thông tin thành công');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            toastr()->error($th->getMessage());
+            return redirect()->back();
+        }
+    }
+
+    private function generateCodeFromName()
+    {
+        $max_code = UserDetail::max('employee_code');
+        if ($max_code) {
+            $lastNumber = (int) substr($max_code, 3);
+            return 'MNV' . sprintf('%03d', $lastNumber + 1);
+        }
+
+        return 'MNV001';
     }
 }

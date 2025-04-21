@@ -16,7 +16,7 @@ class Project extends Model
         'end_date',
         'created_by',
         'type',
-        'creator_id',
+        'manager_id',
         'department_id',
     ];
 
@@ -39,8 +39,8 @@ class Project extends Model
         return $this->hasMany(Task::class, 'project_id');
     }
 
-    public function creator() {
-        return $this->belongsTo(User::class, 'creator_id');
+    public function manager() {
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
     public function department() {

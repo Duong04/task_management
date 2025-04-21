@@ -88,26 +88,26 @@
     </style>
 @endsection
 @section('script')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const editButton = document.getElementById('editTaskBtn');
-        if (editButton) {
-            editButton.addEventListener('click', function () {
-                toggleEdit(true);
-            });
-        }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editButton = document.getElementById('editTaskBtn');
+            if (editButton) {
+                editButton.addEventListener('click', function() {
+                    toggleEdit(true);
+                });
+            }
 
-        window.toggleEdit = function (enable) {
-            document.getElementById('status-view').classList.toggle('d-none', enable);
-            document.getElementById('status-edit').classList.toggle('d-none', !enable);
-            document.getElementById('progress-view').classList.toggle('d-none', enable);
-            document.getElementById('progress-edit').classList.toggle('d-none', !enable);
-            document.getElementById('edit-buttons').classList.toggle('d-none', !enable);
-        };
-    });
-</script>
-<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
-<script type="module" src="/js/comment.js"></script>
+            window.toggleEdit = function(enable) {
+                document.getElementById('status-view').classList.toggle('d-none', enable);
+                document.getElementById('status-edit').classList.toggle('d-none', !enable);
+                document.getElementById('progress-view').classList.toggle('d-none', enable);
+                document.getElementById('progress-edit').classList.toggle('d-none', !enable);
+                document.getElementById('edit-buttons').classList.toggle('d-none', !enable);
+            };
+        });
+    </script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+    <script type="module" src="/js/comment.js"></script>
 @endsection
 @section('content')
     @php
@@ -137,60 +137,37 @@
     @endphp
     <div class="container">
         <div class="page-inner">
-            <div class="page-header">
+            <div class="page-header justify-content-between">
                 <h3 class="fw-bold mb-3"><a href="{{ route('tasks.index') }}" class="me-1"><i
                             class="fas fa-arrow-left"></i></a> Chi tiết công việc</h3>
-                <ul class="breadcrumbs mb-3">
-                    <li class="nav-home">
-                        <a href="{{ route('dashboard') }}">
-                            <i class="icon-home"></i>
-                        </a>
-                    </li>
-                    <li class="separator">
-                        <i class="icon-arrow-right"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="">Quản lý công việc</a>
-                    </li>
-                    <li class="separator">
-                        <i class="icon-arrow-right"></i>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#">Chi tiết công việc</a>
-                    </li>
-                </ul>
+                <div class="col-8 d-flex justify-content-end align-items-start mb-3" style="gap: 10px;">
+                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-outline-primary">✏️ Chỉnh sửa</a>
+                    <form action="{{ route('tasks.delete', $task->id) }}" id="delete-form-{{ $task->id }}"
+                        method="POST" class="d-inline" id="delete-form-{{ $task->id }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger delete">🗑️ Xóa</button>
+                    </form>
+                </div>
             </div>
             <div class="row pb-5">
-                <div class="row justify-content-between align-items-center">
-                    <div class="col-4">
-                        Mã công việc: <span class="badge-custom badge-blue">{{ $task->task_code }}</span>
-                    </div>
-                    <div class="col-8 d-flex justify-content-end align-items-start mb-3" style="gap: 10px;">
-                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-outline-primary">✏️ Chỉnh sửa</a>
-                        <form action="{{ route('tasks.delete', $task->id) }}" id="delete-form-{{ $task->id }}" method="POST" class="d-inline"
-                            id="delete-form-{{ $task->id }}">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-danger delete">🗑️ Xóa</button>
-                        </form>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="border rounded p-4 bg-white shadow-sm">
-                            <div class="row mb-3">
-                                <div class="col-md-6"><span>Người giao việc:</span> <br>
+                            <div class="row">
+                                <div class="col-md-6 mb-4"><span>Tên công việc:</span> <br>
+                                    <strong>{{ $task->name ?? 'N/A' }}</strong>
+                                </div>
+                                <div class="col-md-6 mb-4"><span>Người giao việc:</span> <br>
                                     <strong>{{ $task->createdBy->name ?? 'N/A' }}</strong>
                                 </div>
-                                <div class="col-md-6"><span>Người thực hiện:</span> <br>
+                                <div class="col-md-6 mb-4"><span>Người thực hiện:</span> <br>
                                     <strong>{{ $task->assignedTo->name ?? 'N/A' }}</strong>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6"><span>Hạn hoàn thành:</span><br>
+                                <div class="col-md-6 mb-4"><span>Hạn hoàn thành:</span><br>
                                     <strong>{{ format_date($task->due_date) }}</strong>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-4">
                                     <span>Mức độ ưu tiên:</span>
                                     <br>
                                     <strong
@@ -199,8 +176,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <strong>Mô tả công việc:</strong>
-                                <p class="mt-2">{!! $task->description !!}</p>
+                                <span>Mô tả công việc:</span>
+                                <div class="mt-1">{!! $task->description !!}</div>
                             </div>
 
                             <div>
@@ -229,7 +206,7 @@
                         <div class="border rounded p-4 bg-white shadow-sm mt-4">
                             <h6 class="mb-3">Thảo luận</h6>
                             <div id="comments">
-                                
+
 
                             </div>
 
@@ -253,16 +230,20 @@
                         <div class="border rounded p-4 bg-white shadow-sm">
                             <h6 class="mb-3 d-flex justify-content-between align-items-center">
                                 Tiến độ công việc
-                                <button id="editTaskBtn" class="btn btn-sm btn-outline-warning" data-bs-toggle="tooltip" title="Sửa"><i class="fa fa-edit"></i></button>
+                                <button id="editTaskBtn" class="btn btn-sm text-success" data-bs-toggle="tooltip"
+                                    title="Sửa"><i class="fa fa-edit"></i></button>
                             </h6>
-                    
-                            <form id="updateTaskForm" action="{{ route('tasks.update', ['id' => $task->id, 'redirect' => 'back']) }}" method="POST">
+
+                            <form id="updateTaskForm"
+                                action="{{ route('tasks.update', ['id' => $task->id, 'redirect' => 'back']) }}"
+                                method="POST">
                                 @csrf
                                 @method('PUT')
-                    
+
                                 <div class="mb-2"><strong>Trạng thái:</strong>
-                                    <span id="status-view" class="badge bg-info text-dark">{{ $status[$task->status] }}</span>
-                    
+                                    <span id="status-view"
+                                        class="badge {{ $status_color[$task->status] }} text-dark">{{ $status[$task->status] }}</span>
+
                                     <select name="status" id="status-edit" class="form-select form-select-sm d-none mt-2">
                                         @foreach ($status as $key => $label)
                                             <option value="{{ $key }}" @selected($key == $task->status)>
@@ -271,32 +252,35 @@
                                         @endforeach
                                     </select>
                                 </div>
-                    
+
                                 {{-- Tiến độ --}}
                                 <div class="mb-2"><strong>Tiến độ hiện tại:</strong></div>
                                 <div id="progress-view" class="progress" style="height: 12px;">
                                     <div class="progress-bar bg-info" role="progressbar"
                                         style="width: {{ $task->progress }}%;" aria-valuenow="{{ $task->progress }}"
                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                        
-                                    </div>
-                                    <div class="text-end mt-1 small">{{ $task->progress }}%</div>
-                    
-                                <div id="progress-edit" class="d-none">
-                                    <input type="range" name="progress" class="form-range mt-2" min="0" max="100" value="{{ $task->progress }}"
-                                        oninput="document.getElementById('progress-value').innerText = this.value + '%'">
-                                    <div class="text-end small"><span id="progress-value">{{ $task->progress }}%</span></div>
+
                                 </div>
-                    
+                                <div class="text-end mt-1 small">{{ $task->progress }}%</div>
+
+                                <div id="progress-edit" class="d-none">
+                                    <input type="range" name="progress" class="form-range mt-2" min="0"
+                                        max="100" value="{{ $task->progress }}"
+                                        oninput="document.getElementById('progress-value').innerText = this.value + '%'">
+                                    <div class="text-end small"><span id="progress-value">{{ $task->progress }}%</span>
+                                    </div>
+                                </div>
+
                                 {{-- Nút hành động --}}
                                 <div id="edit-buttons" class="d-none mt-3 text-end">
-                                    <button type="button" class="btn btn-sm btn-secondary me-2" onclick="toggleEdit(false)">Hủy</button>
+                                    <button type="button" class="btn btn-sm btn-secondary me-2"
+                                        onclick="toggleEdit(false)">Hủy</button>
                                     <button type="submit" class="btn btn-sm btn-success">Lưu</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>

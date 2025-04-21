@@ -44,7 +44,9 @@
                                         </div>
                                         <div>
                                             <div class="img-users d-flex justify-content-end position-relative">
+                                                @can('general-check', ['Department Management', 'create'])
                                                 <a href="{{ route('departments.create') }}" class="btn btn-primary btn-round ms-auto">Tạo phòng ban</a>
+                                                @endcan
                                             </div>
                                             <div class="img-users d-flex justify-content-end position-relative">
                                                 <p class="w-75 mt-2 text-end">Thêm phòng ban nếu chưa tồn tại.</p>
@@ -61,10 +63,13 @@
                                                 <div class="pt-3">
                                                     <h5>{{ $item->name }}</h5>
                                                     <div class="d-flex">
+                                                        @can('general-check', ['Department Management', 'update'])
                                                         <a href="{{ route('departments.show', ['id' => $item->id]) }}" data-bs-toggle="tooltip" title="Sửa"
                                                             class="btn btn-link btn-primary btn-lg p-0">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
+                                                        @endcan
+                                                        @can('general-check', ['Department Management', 'delete'])
                                                         <form id="delete-form-{{ $item->id }}" method="POST" action="{{ route('departments.delete', ['id' => $item->id]) }}">
                                                             @csrf
                                                             @method('DELETE')
@@ -73,6 +78,7 @@
                                                                 <i class="fa fa-trash"></i>
                                                             </button>
                                                         </form>
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             </div>
