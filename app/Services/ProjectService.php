@@ -33,7 +33,7 @@ class ProjectService {
                 if (strtoupper($user->role->name) !== 'SUPPER ADMIN' && !collect($hasViewAllOrder)->pluck('value')->contains('viewAll')) {
                     $projects->where('manager_id', $user->id)
                         ->orWhere('created_by', $user->id)
-                        ->where('department_id', $user->department_id);
+                        ->orWhere('department_id', $user->department_id);
                 }
             }
 
